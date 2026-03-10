@@ -2,10 +2,15 @@ server:
   port: 8123
   servlet:
     context-path: /api
+
+
 spring:
   application:
     name: backend2
   # 数据库配置
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/starpicture

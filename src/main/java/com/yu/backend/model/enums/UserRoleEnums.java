@@ -1,6 +1,6 @@
 package com.yu.backend.model.enums;
 
-import com.sun.tools.javac.code.Attribute;
+
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 

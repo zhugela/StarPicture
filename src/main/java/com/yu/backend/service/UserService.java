@@ -2,7 +2,7 @@ package com.yu.backend.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.catalina.User;
+import com.yu.backend.model.entity.User;
 
 /**
 * @author 26228

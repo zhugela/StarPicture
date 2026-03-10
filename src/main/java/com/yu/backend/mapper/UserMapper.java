@@ -2,7 +2,8 @@ package com.yu.backend.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.catalina.User;
+import com.yu.backend.model.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author 26228
@@ -10,6 +11,7 @@ import org.apache.catalina.User;
 * @createDate 2026-03-09 19:39:59
 * @Entity generator.domain.User
 */
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
 }

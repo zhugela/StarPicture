@@ -1,5 +1,8 @@
 package com.yu.backend.model.dto;
 
+import lombok.Data;
+
+@Data
 public class UserRegisterRequest {
     /*
     用户账号

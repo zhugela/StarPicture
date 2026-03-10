@@ -1,9 +1,16 @@
 package com.yu.backend.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import generator.domain.User;
+
+import com.yu.backend.exception.BusinessException;
+import com.yu.backend.exception.ErrorCode;
+import com.yu.backend.model.entity.User;
 import com.yu.backend.service.UserService;
 import com.yu.backend.mapper.UserMapper;
+
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +22,51 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
+
+    @Override
+    public long userRegister(String userAccount, String userPassword, String checkPassword) {
+        //1.校验格式
+        // 账号密码、验证密码、确认密码 都不能为空
+        if (StrUtil.hasBlank(userAccount,userPassword,checkPassword)) {
+             //抛出参数错误的异常
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"参数不能为空");
+        }
+        if (userAccount.length() < 4) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"账号长度不能小于4");
+        }
+        if (userPassword.length() < 8 || checkPassword.length() < 8) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"密码长度不能小于8");
+        }
+        if(!userPassword.equals(checkPassword)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"两次输入的密码不一样");
+        }
+//      检查用户数据库里面是否还有重复的账号
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userAccount",userAccount);
+        //统计相同的次数
+        long count = this.baseMapper.selectCount(queryWrapper);
+        //如果统计次数大于1的话就返回异常
+        if(count>0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"重复创建账号");
+        }
+
+//        4.把用户注册密码进行加密
+        //把最初的密码加盐生成加密密码
+        String EncryptPassword = getEncryptPassword(userPassword);
+//        5.把用户信息保存到数据库
+        User user = new User();
+        user.setUserAccount(userAccount);
+        user.setUserPassword(EncryptPassword);
+        user.setUserName("帅哥");
+        this.save(user);
+//        6.返回用户id
+        return user.getId();
+    }
+
+    @Override
+    public String getEncryptPassword(String userPassword) {
+        return "";
+    }
 }
 
 
