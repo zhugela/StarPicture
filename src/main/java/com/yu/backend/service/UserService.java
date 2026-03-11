@@ -37,4 +37,8 @@ public interface UserService extends IService<User> {
      * @return 脱敏后的用户信息
      */
     LoginUserVo getLoginUserVO(User user);
+    /*
+    *获取当前用户信息
+     */
+    User getLoginUser(HttpServletRequest request);
 }

@@ -6,13 +6,11 @@ import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.model.dto.UserLoginRequest;
 import com.yu.backend.model.dto.UserRegisterRequest;
+import com.yu.backend.model.entity.User;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.service.UserService;
 import org.springframework.http.HttpRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -60,5 +58,13 @@ public class UserController {
         //返回成功数据
         return ResultUtils.success(loginUserVo);
 
+    }
+    /*
+    *  获取用户信息
+     */
+    @GetMapping("/get/login")
+    public BaseResponse<LoginUserVo> getLoginUser(HttpServletRequest request){
+        User user = userService.getLoginUser(request);
+        return ResultUtils.success(userService.getLoginUserVO(user));
     }
 }

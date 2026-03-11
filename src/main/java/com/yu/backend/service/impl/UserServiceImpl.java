@@ -126,6 +126,29 @@ private static final String salt = "zhuzhu";
         BeanUtil.copyProperties(user, loginUserVo);
         return loginUserVo;
     }
+    /*
+     * 获取当前登录用户信息
+     * @param request 请求
+     * @return 当前登录用户
+     */
+    @Override
+    public User getLoginUser(HttpServletRequest request) {
+        // 1. 从 Session 中取出用户信息
+        //    - 用 request.getSession().getAttribute(...) 获取
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN);
+        User currentUser = (User) userObj;
+        if(currentUser == null || currentUser.getId() == null){
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
+        // 从数据库中查询（追求性能的话可以注释，直接返回上述结果）
+        Long userId = currentUser.getId();
+        currentUser = this.getById(userId);
+        if (currentUser == null) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
+        // 3. 返回用户信息
+        return currentUser;
+    }
 }
 
 
