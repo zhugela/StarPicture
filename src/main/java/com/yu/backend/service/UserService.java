@@ -57,9 +57,18 @@ public interface UserService extends IService<User> {
      * @return
      */
 
-    List<UserVO> getUserVOList(List<UserVO> userVOList);
+    List<UserVO> getUserVOList(List<User> userVOList);
     /**
      * 获取查询对象条件
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
+    /**
+     * 用户注销
+     *
+     * @param request request
+     * @return  注销结果
+     */
+    boolean userLogout(HttpServletRequest request);
+
+
 }

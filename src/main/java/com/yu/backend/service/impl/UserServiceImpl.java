@@ -173,7 +173,7 @@ private static final String salt = "zhuzhu";
     }
 
     @Override
-    public List<UserVO> getUserVOList(List<UserVO> userVOList) {
+    public List<UserVO> getUserVOList(List<User> userVOList) {
         if (userVOList == null) {
             return null;
         }
@@ -210,6 +210,19 @@ private static final String salt = "zhuzhu";
         //4.返回查询对象
         return queryWrapper;
     }
+
+    @Override
+    public boolean userLogout(HttpServletRequest request) {
+        // 先判断是否已登录
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN);
+        if (userObj == null) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "未登录");
+        }
+        // 移除登录态
+        request.getSession().removeAttribute(UserConstant.USER_LOGIN);
+        return true;
+    }
+
 
 }
 
