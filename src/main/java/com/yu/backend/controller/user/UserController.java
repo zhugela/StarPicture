@@ -1,15 +1,17 @@
-package com.yu.backend.controller;
+package com.yu.backend.controller.user;
 
+import com.yu.backend.annotation.AuthCheck;
 import com.yu.backend.common.BaseResponse;
 import com.yu.backend.common.ResultUtils;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
-import com.yu.backend.model.dto.UserLoginRequest;
-import com.yu.backend.model.dto.UserRegisterRequest;
+import com.yu.backend.model.dto.user.UserAddRequest;
+import com.yu.backend.model.dto.user.UserLoginRequest;
+import com.yu.backend.model.dto.user.UserRegisterRequest;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.service.UserService;
-import org.springframework.http.HttpRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -66,5 +68,19 @@ public class UserController {
     public BaseResponse<LoginUserVo> getLoginUser(HttpServletRequest request){
         User user = userService.getLoginUser(request);
         return ResultUtils.success(userService.getLoginUserVO(user));
+    }
+
+    @AuthCheck(mustRole = "admin")
+    @GetMapping("/get")
+    public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest){
+        //1.首先要检验参数
+        ThrowUtils.throwIf(userAddRequest == null,ErrorCode.PARAMS_ERROR);
+        //2.把参数复制到user对象里面去
+        User user = new User();
+        BeanUtils.copyProperties(userAddRequest,user);
+        //3.设置一个默认密码常量，还要对密码进行加密
+         String DEFAULT_PASSWORD = "12345678";
+         user.setUserPassword(userService.getEncryptPassword(DEFAULT_PASSWORD));
+
     }
 }

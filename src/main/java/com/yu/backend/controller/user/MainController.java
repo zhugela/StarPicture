@@ -1,4 +1,4 @@
-package com.yu.backend.controller;
+package com.yu.backend.controller.user;
 
 import com.yu.backend.common.BaseResponse;
 import com.yu.backend.common.ResultUtils;

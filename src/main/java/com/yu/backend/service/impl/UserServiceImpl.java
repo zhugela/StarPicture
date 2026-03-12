@@ -1,6 +1,7 @@
 package com.yu.backend.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,16 +9,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yu.backend.constant.UserConstant;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
+import com.yu.backend.model.dto.user.UserQueryRequest;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.vo.LoginUserVo;
+import com.yu.backend.model.vo.UserVO;
 import com.yu.backend.service.UserService;
 import com.yu.backend.mapper.UserMapper;
 
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @author 26228
@@ -149,6 +154,63 @@ private static final String salt = "zhuzhu";
         // 3. 返回用户信息
         return currentUser;
     }
+
+    /**
+     * 获取脱敏后的信息
+     * @param user
+     * @return
+     */
+
+    @Override
+    public UserVO getUserVO(User user) {
+        if (user == null) {
+            return null;
+        }
+        UserVO  userVO = new UserVO();
+         BeanUtil.copyProperties(user, userVO);
+        return userVO;
+
+    }
+
+    @Override
+    public List<UserVO> getUserVOList(List<UserVO> userVOList) {
+        if (userVOList == null) {
+            return null;
+        }
+        List<UserVO> userVOList1 = BeanUtil.copyToList(userVOList, UserVO.class);
+        return userVOList1;
+    }
+
+    /**
+     *  获取查询后的对象
+     * @param userQueryRequest
+     * @return
+     */
+
+    @Override
+    public QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest) {
+        //1.创建查询对象
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if(userQueryRequest == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //2.根据查询对象啊生成查询条件
+        String userName = userQueryRequest.getUserName();
+        String userAccount = userQueryRequest.getUserAccount();
+        long id = userQueryRequest.getId();
+        String userRole = userQueryRequest.getUserRole();
+        String userprofile = userQueryRequest.getUserProfile();
+
+        //3将获得的查询条件跟用户传输进来的数据比对
+        queryWrapper.eq(ObjectUtil.isNotNull(id),"id",id);
+        queryWrapper.like(StrUtil.isNotBlank(userName),"userName",userName);
+        queryWrapper.like(StrUtil.isNotBlank(userAccount),"userAccount",userAccount);
+        queryWrapper.eq(StrUtil.isNotBlank(userRole),"userRole",userRole);
+        queryWrapper.like(StrUtil.isNotBlank(userprofile),"userProfile",userprofile);
+        //4.返回查询对象
+        return queryWrapper;
+    }
+
 }
 
 
