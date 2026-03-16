@@ -2,6 +2,7 @@ package com.yu.backend.model.vo;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import com.yu.backend.model.entity.User;
 import lombok.Data;
 
 
@@ -70,4 +71,9 @@ public class UserVO implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 封装类转对象
+     */
+
 }
