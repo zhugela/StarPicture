@@ -2,6 +2,7 @@ package com.yu.backend.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.backend.model.dto.picture.PictureQueryRequest;
 import com.yu.backend.model.dto.picture.PictureUploadRequest;
@@ -9,6 +10,8 @@ import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.vo.PictureVO;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
 * @author 26228
@@ -31,6 +34,14 @@ public interface PictureService extends IService<Picture> {
      * 获取查询条件
      */
     QueryWrapper<Picture> getQueryWrapper(PictureQueryRequest pictureQueryRequest);
-
-
+    /**
+     * 获取单个图像的VO对象
+     *
+     */
+    PictureVO getPictureVO(Picture picture, HttpServletRequest request);
+    /**
+     * 分页获取图片的VO对象列表
+     *
+     */
+    Page<PictureVO> getPictureVOPage(Page<Picture> picturePage, HttpServletRequest request);
 }

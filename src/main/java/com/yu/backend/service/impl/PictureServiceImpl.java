@@ -1,8 +1,10 @@
 package com.yu.backend.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.yu.backend.exception.ErrorCode;
@@ -16,14 +18,17 @@ import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.enums.UserRoleEnums;
 import com.yu.backend.model.vo.PictureVO;
+import com.yu.backend.model.vo.UserVO;
 import com.yu.backend.service.PictureService;
 
+import com.yu.backend.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.yu.backend.constant.UserConstant.ADMIN_ROLE;
 
@@ -40,6 +45,9 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
 
     @Resource
     private PictureMapper pictureMapper;
+
+    @Resource
+    private UserService userService;
 
     @Override
     public PictureVO uploadPicture(MultipartFile multipartFile, PictureUploadRequest pictureUploadRequest, User loginUser) {
@@ -106,8 +114,83 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         queryWrapper.eq(ObjectUtil.isNotNull(userId), "userId", userId);
         queryWrapper.like(StrUtil.isNotBlank(name), "name", name);
         queryWrapper.like(StrUtil.isNotBlank(introduction), "introduction", introduction);
-        queryWrapper.eq()
+        queryWrapper.eq(ObjectUtil.isNotNull(picSize), "picSize", picSize);
+        queryWrapper.eq(ObjectUtil.isNotNull(picWidth), "picWidth", picWidth);
+        queryWrapper.eq(ObjectUtil.isNotNull(picHeight), "picHeight", picHeight);
+        queryWrapper.eq(ObjectUtil.isNotNull(picScale), "picScale", picScale);
+        queryWrapper.eq(StrUtil.isNotBlank(picFormat), "picFormat", picFormat);
+        queryWrapper.like(StrUtil.isNotBlank(category), "category", category);
+        // 正确：同时搜 name 和 introduction
+        if (StrUtil.isNotBlank(searchText)) {
+            queryWrapper.and(qw -> qw
+                    .like("name", searchText)
+                    .or()
+                    .like("introduction", searchText)
+            );
+        }
+
+        //JSON数组查询
+        if (CollUtil.isNotEmpty(tags)) {
+            for (String tag : tags) {
+                queryWrapper.like("tags", "\"" + tag + "\"");
+            }
+        }
+        String sortField = pictureQueryRequest.getSortField();
+        String sortOrder = pictureQueryRequest.getSortOrder();
+        queryWrapper.orderBy(StrUtil.isNotEmpty(sortField), "ascend".equals(sortOrder), sortField);
+        return queryWrapper;
     }
+
+    @Override
+    public PictureVO getPictureVO(Picture picture, HttpServletRequest request) {
+        //对象转封装类
+        PictureVO pictureVO = PictureVO.objToVo(picture);
+        //关联查询用户信息
+        Long userId = picture.getUserId();
+        if (userId != null&& userId > 0) {
+            User user = userService.getById(userId);
+            UserVO userVO = userService.getUserVO(user);
+            pictureVO.setUser(userVO);
+        }
+        return pictureVO;
+    }
+    @Override
+    public Page<PictureVO> getPictureVOPage(Page<Picture> picturePage, HttpServletRequest request) {
+        List<Picture> pictureList = picturePage.getRecords();
+        Page<PictureVO> pictureVOPage = new Page<>(picturePage.getCurrent(), picturePage.getSize(), picturePage.getTotal());
+
+        if (CollUtil.isEmpty(pictureList)) {
+            return pictureVOPage;
+        }
+
+        // 1. Picture 转 PictureVO
+        List<PictureVO> pictureVOList = new ArrayList<>();
+        for (Picture picture : pictureList) {
+            pictureVOList.add(PictureVO.objToVo(picture));
+        }
+
+        // 2. 收集所有 userId，批量查用户
+        Set<Long> userIdSet = new HashSet<>();
+        for (Picture picture : pictureList) {
+            userIdSet.add(picture.getUserId());
+        }
+        List<User> userList = userService.listByIds(userIdSet);
+        Map<Long, User> userMap = new HashMap<>();
+        for (User user : userList) {
+            userMap.put(user.getId(), user);
+        }
+
+        // 3. 给每个 PictureVO 填上用户信息
+        for (PictureVO pictureVO : pictureVOList) {
+            User user = userMap.get(pictureVO.getUserId());
+            pictureVO.setUser(userService.getUserVO(user));
+        }
+
+        pictureVOPage.setRecords(pictureVOList);
+        return pictureVOPage;
+    }
+
+
 
 
     private Picture buildPicture(UploadPictureResult uploadPictureResult,Picture oldPicture,Long userId){
