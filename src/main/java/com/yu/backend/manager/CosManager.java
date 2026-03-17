@@ -48,6 +48,13 @@ public class CosManager {
         putObjectRequest.setPicOperations(picOperations);
         return cosClient.putObject(putObjectRequest);
     }
+    /**
+     * 获取 COS 访问的基础地址
+     */
+    public String getBaseUrl() {
+        return String.format("https://%s.cos.%s.myqcloud.com",
+                cosClientConfig.getBucket(), cosClientConfig.getRegion());
+    }
 
 }
 
