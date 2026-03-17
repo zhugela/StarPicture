@@ -3,27 +3,29 @@ server:
   servlet:
     context-path: /api
 
-
 spring:
   application:
     name: backend2
-  # 数据库配置
+  profiles:
+    active: local
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
 mybatis-plus:
   configuration:
-    # MyBatis 配置
     map-underscore-to-camel-case: false
-    # 仅在开发环境打印日志
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     enable-sql-runner: true
     db-config:
-      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
-      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
-      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
-#接口文档配置
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
 knife4j:
   enable: true
   openapi:
@@ -32,4 +34,4 @@ knife4j:
     group:
       default:
         api-rule: package
-        api-rule-resource: com.yu.bankend.controller
+        api-rule-resource: com.yu.backend.controller

@@ -1,8 +1,14 @@
 package com.yu.backend.service;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.backend.model.dto.picture.PictureQueryRequest;
+import com.yu.backend.model.dto.picture.PictureUploadRequest;
 import com.yu.backend.model.entity.Picture;
+import com.yu.backend.model.entity.User;
+import com.yu.backend.model.vo.PictureVO;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
 * @author 26228
@@ -10,5 +16,21 @@ import com.yu.backend.model.entity.Picture;
 * @createDate 2026-03-15 06:54:53
 */
 public interface PictureService extends IService<Picture> {
+    /**
+     * 上传图片
+     * @param multipartFile 文件
+     *
+     */
+    PictureVO uploadPicture(MultipartFile multipartFile, PictureUploadRequest pictureUploadRequest, User loginUser);
+
+    /**
+     * 判断是否为管理员
+     */
+    boolean isAdmin(User loginUser);
+    /**
+     * 获取查询条件
+     */
+    QueryWrapper<Picture> getQueryWrapper(PictureQueryRequest pictureQueryRequest);
+
 
 }
