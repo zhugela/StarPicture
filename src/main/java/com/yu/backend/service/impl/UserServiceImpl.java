@@ -11,6 +11,7 @@ import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.model.dto.user.UserQueryRequest;
 import com.yu.backend.model.entity.User;
+import com.yu.backend.model.enums.UserRoleEnums;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.model.vo.UserVO;
 import com.yu.backend.service.UserService;
@@ -221,6 +222,16 @@ private static final String salt = "zhuzhu";
         // 移除登录态
         request.getSession().removeAttribute(UserConstant.USER_LOGIN);
         return true;
+    }
+
+    /**
+     * 判断用户是不是管理员
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean isAdmin(User user) {
+        return user != null && UserRoleEnums.ADMIN.getValue().equals(user.getUserRole());
     }
 
 

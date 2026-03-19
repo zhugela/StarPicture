@@ -26,10 +26,7 @@ public interface PictureService extends IService<Picture> {
      */
     PictureVO uploadPicture(MultipartFile multipartFile, PictureUploadRequest pictureUploadRequest, User loginUser);
 
-    /**
-     * 判断是否为管理员
-     */
-    boolean isAdmin(User loginUser);
+
     /**
      * 获取查询条件
      */
@@ -44,4 +41,11 @@ public interface PictureService extends IService<Picture> {
      *
      */
     Page<PictureVO> getPictureVOPage(Page<Picture> picturePage, HttpServletRequest request);
+
+    /**
+     * 检验参数
+     */
+    void validPicture(Picture picture);
+
+
 }

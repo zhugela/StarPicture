@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.manager.FileManager;
@@ -80,15 +81,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         return PictureVO.objToVo(picture);
 
     }
-    /**
-     * 判断是否为管理员
-     */
 
-
-        @Override
-        public boolean isAdmin(User user) {
-            return user != null && UserRoleEnums.ADMIN.getValue().equals(user.getUserRole());
-        }
 
     @Override
     public QueryWrapper<Picture> getQueryWrapper(PictureQueryRequest pictureQueryRequest) {
@@ -190,7 +183,24 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         return pictureVOPage;
     }
 
+    @Override
+    public void validPicture(Picture picture) {
+        //1. 判断图片是否为空
+        ThrowUtils.throwIf(picture == null, ErrorCode.PARAMS_ERROR,"图片不能为空");
+        //2.获取图片里面的校验信息
+        Long id = picture.getId();
+        String url = picture.getUrl();
+        String introduction = picture.getIntroduction();
+        //3.校验图片的信息
+        ThrowUtils.throwIf(id == null,ErrorCode.PARAMS_ERROR,"图片id不能为空");
+        if(StrUtil.isNotBlank(url)){
+            ThrowUtils.throwIf(url.length() > 1024,ErrorCode.PARAMS_ERROR,"图片url长度过长");
+        }
+        if(StrUtil.isNotBlank(introduction)){
+            ThrowUtils.throwIf(introduction.length() > 1024,ErrorCode.PARAMS_ERROR,"图片简介长度过长");
+        }
 
+    }
 
 
     private Picture buildPicture(UploadPictureResult uploadPictureResult,Picture oldPicture,Long userId){

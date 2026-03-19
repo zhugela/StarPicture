@@ -69,6 +69,6 @@ public interface UserService extends IService<User> {
      * @return  注销结果
      */
     boolean userLogout(HttpServletRequest request);
-
+    boolean isAdmin(User user);
 
 }
