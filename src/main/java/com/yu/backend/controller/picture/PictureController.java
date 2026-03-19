@@ -13,6 +13,7 @@ import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.model.dto.picture.PictureEditRequest;
 import com.yu.backend.model.dto.picture.PictureQueryRequest;
+import com.yu.backend.model.dto.picture.PictureTagCategory;
 import com.yu.backend.model.dto.picture.PictureUpdateRequest;
 import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
