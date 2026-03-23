@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.backend.model.dto.picture.PictureQueryRequest;
+import com.yu.backend.model.dto.picture.PictureReviewRequest;
 import com.yu.backend.model.dto.picture.PictureUploadRequest;
 import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface PictureService extends IService<Picture> {
     /**
      * 上传图片
+     *
      * @param multipartFile 文件
      *
      */
@@ -31,11 +33,13 @@ public interface PictureService extends IService<Picture> {
      * 获取查询条件
      */
     QueryWrapper<Picture> getQueryWrapper(PictureQueryRequest pictureQueryRequest);
+
     /**
      * 获取单个图像的VO对象
      *
      */
     PictureVO getPictureVO(Picture picture, HttpServletRequest request);
+
     /**
      * 分页获取图片的VO对象列表
      *
@@ -47,5 +51,19 @@ public interface PictureService extends IService<Picture> {
      */
     void validPicture(Picture picture);
 
+    /**
+     * 审核照片信息
+     *
+     * @param pictureReviewRequest
+     *
+     */
+    void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser);
 
+    /**
+     * 填充审核参数，方便其他方法使用
+     *
+     * @param picture   picture
+     * @param loginUser 登录的用户
+     */
+    void fillReviewParams(Picture picture, User loginUser);
 }

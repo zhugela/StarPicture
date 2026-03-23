@@ -11,12 +11,10 @@ import com.yu.backend.constant.UserConstant;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
-import com.yu.backend.model.dto.picture.PictureEditRequest;
-import com.yu.backend.model.dto.picture.PictureQueryRequest;
-import com.yu.backend.model.dto.picture.PictureTagCategory;
-import com.yu.backend.model.dto.picture.PictureUpdateRequest;
+import com.yu.backend.model.dto.picture.*;
 import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
+import com.yu.backend.model.enums.PictureReviewStatusEnum;
 import com.yu.backend.model.vo.PictureVO;
 import com.yu.backend.service.PictureService;
 import com.yu.backend.service.UserService;
@@ -121,6 +119,8 @@ public class PictureController {
         // 6. 参数校验
         pictureService.validPicture(updatePicture);
 
+        pictureService.fillReviewParams(picture, user);
+
         // 7. 更新数据库
         boolean result = pictureService.updateById(updatePicture);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
@@ -145,6 +145,10 @@ public class PictureController {
         picture.setTags(JSONUtil.toJsonStr(pictureUpdateRequest.getTags()));
         // 校验参数
         pictureService.validPicture(picture);
+        User loginUser = userService.getLoginUser(request);
+
+        pictureService.fillReviewParams(picture, loginUser);
+
         // 判断图片是否存在（加上这段）
         Picture oldPicture = pictureService.getById(pictureUpdateRequest.getId());
         ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
@@ -166,15 +170,28 @@ public class PictureController {
     /**
      * 获取图片列表VO
      */
+
     @PostMapping("/list/page/vo")
-    public BaseResponse<Page<PictureVO>> listPictureVOByPage(@RequestBody PictureQueryRequest pictureQueryRequest, HttpServletRequest request) {
+    public BaseResponse<Page<PictureVO>> listPictureVOByPage(@RequestBody PictureQueryRequest pictureQueryRequest,
+                                                             HttpServletRequest request) {
         long current = pictureQueryRequest.getCurrent();
-        long picsize = pictureQueryRequest.getPageSize();
-        Page<Picture> page = pictureService.page(new Page<>(current, picsize), pictureService.getQueryWrapper(pictureQueryRequest));
-        Page<PictureVO> pictureVOPage = pictureService.getPictureVOPage(page, request);
-        return ResultUtils.success(pictureVOPage);
+        long size = pictureQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        // 默认只查询过审
+        pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
+        // 查询数据库
+        Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
+                pictureService.getQueryWrapper(pictureQueryRequest));
+        // 获取封装类
+        return ResultUtils.success(pictureService.getPictureVOPage(picturePage, request));
     }
 
+
+    /**
+     * 创建图片的标签
+     * @return
+     */
     @GetMapping("/tag_category")
     public BaseResponse<PictureTagCategory> listPictureTagCategory() {
         PictureTagCategory pictureTagCategory = new PictureTagCategory();
@@ -184,6 +201,24 @@ public class PictureController {
         pictureTagCategory.setCategoryList(categoryList);
         return ResultUtils.success(pictureTagCategory);
     }
+
+    /**
+     * 审核照片（管理员）
+     * @param pictureReviewRequest
+     * @param request
+     * @return
+     */
+
+    @PostMapping("/review")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> doPictureReview(@RequestBody PictureReviewRequest pictureReviewRequest,
+                                                 HttpServletRequest request) {
+        ThrowUtils.throwIf(pictureReviewRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        pictureService.doPictureReview(pictureReviewRequest, loginUser);
+        return ResultUtils.success(true);
+    }
+
 
 
 

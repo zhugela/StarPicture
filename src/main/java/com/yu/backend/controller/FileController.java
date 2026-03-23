@@ -75,7 +75,6 @@ public class FileController {
      * 图片上传
      */
     @PostMapping("/upload")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<PictureVO> UploadPicture(@RequestPart("file") MultipartFile multipartFile,
                                                  PictureUploadRequest pictureUploadRequest, HttpServletRequest request){
             //第一步：获得登录用户的信息
@@ -86,4 +85,3 @@ public class FileController {
         return ResultUtils.success(pictureVO);
     }
 }
-
