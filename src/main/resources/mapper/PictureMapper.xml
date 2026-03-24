@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yu.backend.mapper.PictureMapper">
 
-    <resultMap id="BaseResultMap" type="com.yu.backend.model.entity.Picture">
+    <resultMap id="BaseResultMap" type="com.yu.backend.mapper.PictureMapper">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="url" column="url" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
@@ -37,3 +37,4 @@
         reviewerId,reviewTime
     </sql>
 </mapper>
+
