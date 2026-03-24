@@ -68,13 +68,28 @@ public class FileManager {
             }
         }
     }
+    public UploadPictureResult uploadPicture2(File file, String uploadPathPrefix) {
+        // 图片上传地址
+        String imagePath = String.format("%s/%s_%s.%s", uploadPathPrefix, LocalDate.now(),
+                RandomUtil.randomString(16), FileUtil.getSuffix(file.getName()));
+        try {
+            return analyzeCosReturn(new AnalyzeCosParams(
+                    cosManager.putPictureObject(imagePath, file),
+                    FileUtil.mainName(file.getName()),
+                    imagePath
+            ));
+        } catch (Exception e) {
+            log.error("FileManager#uploadPicture2 error {}", ExceptionUtils.getRootCauseMessage(e));
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传图片失败");
+        }
+    }
 
     private UploadPictureResult analyzeCosReturn(AnalyzeCosParams analyzeCosParams) {
         ImageInfo imageInfo = analyzeCosParams.getPutObjectResult().getCiUploadResult().getOriginalInfo().getImageInfo();
         return UploadPictureResult.builder()
                 .picFormat(imageInfo.getFormat())
                 .picHeight(imageInfo.getHeight())
-                .picWidth(imageInfo.getHeight())
+                .picWidth(imageInfo.getWidth())
                 .picSize((long) imageInfo.getQuality())
                 .picScale(NumberUtil.round(imageInfo.getHeight() * 1.0 / imageInfo.getWidth(), 2).doubleValue())
                 .picName(analyzeCosParams.getImageName())
