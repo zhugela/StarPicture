@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.backend.model.dto.picture.PictureQueryRequest;
 import com.yu.backend.model.dto.picture.PictureReviewRequest;
+import com.yu.backend.model.dto.picture.PictureUploadByBatchRequest;
 import com.yu.backend.model.dto.picture.PictureUploadRequest;
 import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
@@ -23,10 +24,10 @@ public interface PictureService extends IService<Picture> {
     /**
      * 上传图片
      *
-     * @param multipartFile 文件
+     * @param
      *
      */
-    PictureVO uploadPicture(MultipartFile multipartFile, PictureUploadRequest pictureUploadRequest, User loginUser);
+    PictureVO uploadPicture(Object inputSource, PictureUploadRequest pictureUploadRequest, User loginUser);
 
 
     /**
@@ -66,4 +67,12 @@ public interface PictureService extends IService<Picture> {
      * @param loginUser 登录的用户
      */
     void fillReviewParams(Picture picture, User loginUser);
+
+    /**
+     * 批量抓取和创建图片
+     * @param pictureUploadByBatchRequest
+     * @param loginUser
+     * @return
+     */
+    Integer uploadPictureByBatch(PictureUploadByBatchRequest pictureUploadByBatchRequest, User loginUser);
 }

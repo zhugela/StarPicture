@@ -219,7 +219,16 @@ public class PictureController {
         return ResultUtils.success(true);
     }
 
-
+    /**
+     * 通过url上传图片
+     */
+    @PostMapping("/upload/url")
+    public BaseResponse<PictureVO> uploadPictureUrl(@RequestBody PictureUploadRequest pictureUploadRequest, HttpServletRequest request) {
+        User loginUser = userService.getLoginUser(request);
+        String fileurl = pictureUploadRequest.getFileUrl();
+        PictureVO pictureVO = pictureService.uploadPicture(fileurl,pictureUploadRequest,loginUser);
+        return ResultUtils.success(pictureVO);
+    }
 
 
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.net.URL;
 
-@Component
+@Component("。url")
 public class UrlPictureUpload extends PictureUploadTemplate{
 
     /**
