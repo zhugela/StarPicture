@@ -229,6 +229,12 @@ public class PictureController {
         PictureVO pictureVO = pictureService.uploadPicture(fileurl,pictureUploadRequest,loginUser);
         return ResultUtils.success(pictureVO);
     }
-
-
+    /**
+     *
+     */
+    @PostMapping("/upload/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Integer> uploadPictureByBatch(@RequestBody PictureUploadRequest pictureUploadRequest,HttpServletRequest request){
+        
+    }
 }

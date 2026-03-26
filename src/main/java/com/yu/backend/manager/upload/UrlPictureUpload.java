@@ -9,22 +9,24 @@ import cn.hutool.http.Method;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
-
 import org.springframework.stereotype.Component;
+
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
-@Component("。url")
-public class UrlPictureUpload extends PictureUploadTemplate{
+@Component
+public class UrlPictureUpload extends PictureUploadTemplate {
 
-    /**
-     * 处理文件
-     * @param object 内容来源
-     * @param file
-     * @return
-     */
+    private final static List<String> ALLOW_FILE_TYPE = Arrays.asList("image/png", "image/webp", "image/jpeg");
+
+    private final static List<String> ALLOW_URL_PROTOCOL = Arrays.asList("http", "https");
+
+
     @Override
-    protected File processFile(Object object,File file) {
+    protected File processFile(Object object, File file) {
         String url = (String) object;
         HttpUtil.downloadFile(url, file);
         return file;
@@ -32,42 +34,47 @@ public class UrlPictureUpload extends PictureUploadTemplate{
 
     @Override
     protected void checkParamSource(Object object) {
-        String fileurl = (String) object;
-        ThrowUtils.throwIf(StrUtil.isBlank(fileurl), ErrorCode.PARAMS_ERROR, "URL不能为空");
-         // 这里可以添加更多的URL校验逻辑，例如检查URL格式、是否为图片链接等
-        try{
-            //1.验证格式
-            new URL(fileurl);
-        }catch (Exception e){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件格式不对");
+        String fileUrl = (String) object;
+        ThrowUtils.throwIf(StrUtil.isBlank(fileUrl), ErrorCode.PARAMS_ERROR, "文件地址不能为空");
+        try {
+            // 1. 验证 URL 格式  验证是否是合法的 URL
+            new URL(fileUrl);
+        } catch (MalformedURLException e) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件地址格式不正确");
         }
-        //2.检查URL协议
-        ThrowUtils.throwIf(!fileurl.startsWith("http://") && !fileurl.startsWith("https://"), ErrorCode.PARAMS_ERROR, "URL必须以http://或https://开头");
-        //3.发送head请求验证文件是否存在
-        try(HttpResponse response = HttpUtil.createRequest(Method.HEAD,fileurl).execute()){
-            if(response.getStatus()!= HttpStatus.HTTP_OK){
+        // 2. 校验 URL 协议
+        ThrowUtils.throwIf(ALLOW_URL_PROTOCOL.stream().noneMatch(fileUrl::startsWith),
+                ErrorCode.PARAMS_ERROR, "仅支持 HTTP 或 HTTPS 协议的文件地址");
+        // 3. 发送 HEAD 请求以验证文件是否存在
+        try (HttpResponse response = HttpUtil.createRequest(Method.HEAD, fileUrl).execute()) {
+            // 未正常返回，无需执行其他判断
+            if (response.getStatus() != HttpStatus.HTTP_OK) {
                 return;
             }
-            //4.检验文件类型
-            String cotentType = response.header("Content-Type");
-            if(StrUtil.isNotBlank(cotentType)){
-                ThrowUtils.throwIf(!cotentType.startsWith("image/"), ErrorCode.PARAMS_ERROR, "URL必须指向一个图片文件");
+            // 4. 校验文件类型
+            String contentType = response.header("Content-Type");
+            if (StrUtil.isNotBlank(contentType)) {
+                ThrowUtils.throwIf(!ALLOW_FILE_TYPE.contains(contentType.toLowerCase()),
+                        ErrorCode.PARAMS_ERROR, "文件类型错误");
             }
-            //5.检验文件大小
+            // 5. 校验文件大小
             String contentLengthStr = response.header("Content-Length");
-            if(StrUtil.isNotBlank(contentLengthStr)){
-                try{
+            if (StrUtil.isNotBlank(contentLengthStr)) {
+                try {
                     long contentLength = Long.parseLong(contentLengthStr);
-                    ThrowUtils.throwIf(contentLength>TWO_MB,ErrorCode.PARAMS_ERROR,"文件大小不能超过2M");
-                }catch (NumberFormatException e){
-                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "无法获取文件大小");
+                    ThrowUtils.throwIf(contentLength > TWO_MB, ErrorCode.PARAMS_ERROR, "文件大小不能超过 2M");
+                } catch (NumberFormatException e) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件大小格式错误");
                 }
             }
         }
-        }
+    }
+
     @Override
-    protected String getOriginFilename(Object object){
+    protected String getOriginFilename(Object object) {
         String url = (String) object;
         return FileUtil.mainName(url) + "." + FileUtil.getSuffix(url);
     }
 }
+
+

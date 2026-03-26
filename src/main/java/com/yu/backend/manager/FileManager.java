@@ -40,7 +40,7 @@ public class FileManager {
      */
     private static final long ONE_M = 1024 * 1024L;
 
-    private static final List<String> ALLOW_FORMAT_LIST = Arrays.asList("jpeg", "jpg", "png", "webp");
+    public static final List<String> ALLOW_FORMAT_LIST = Arrays.asList("jpeg", "jpg", "png", "webp");
 
     @Resource
     private CosClientConfig cosClientConfig;
