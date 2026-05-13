@@ -4,21 +4,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
-
+/**
+ * @author leikooo
+ */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PictureUploadRequest implements Serializable {
-  
-    /**  
-     * 图片 id（用于修改）  
-     */  
-    private Long id;
+
+    @Serial
+    private static final long serialVersionUID = -1989537749944365432L;
+
     /**
-     * 文件地址
+     * 图片 id（用于修改）
      */
-    public String fileUrl;
-    private static final long serialVersionUID = 1L;  
+    private Long id;
+
+    /**
+     * 图片名称
+     */
+    private String picName;
+
+    private String fileUrl;
+
 }
+
 
