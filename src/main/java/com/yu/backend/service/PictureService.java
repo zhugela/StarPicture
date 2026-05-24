@@ -4,16 +4,21 @@ package com.yu.backend.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.backend.model.dto.picture.CreatePictureOutPaintingTaskRequest;
+import com.yu.backend.model.dto.picture.PictureEditByBatchRequest;
+import com.yu.backend.model.dto.picture.PictureEditRequest;
 import com.yu.backend.model.dto.picture.PictureQueryRequest;
 import com.yu.backend.model.dto.picture.PictureReviewRequest;
 import com.yu.backend.model.dto.picture.PictureUploadByBatchRequest;
-import com.yu.backend.model.dto.picture.PictureUploadRequest;
+import com.yu.backend.model.dto.picture.PictureUploadWithUserDTO;
 import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.vo.PictureVO;
+import com.yu.backend.api.aliyunai.model.CreateOutPaintingTaskResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @author 26228
@@ -24,10 +29,10 @@ public interface PictureService extends IService<Picture> {
     /**
      * 上传图片
      *
-     * @param
-     *
+     * @param inputSource           文件 / url
+     * @param pictureUploadRequest 请求（含登录用户）
      */
-    PictureVO uploadPicture(Object inputSource, PictureUploadRequest pictureUploadRequest, User loginUser);
+    PictureVO uploadPicture(Object inputSource, PictureUploadWithUserDTO pictureUploadRequest);
 
 
     /**
@@ -75,5 +80,49 @@ public interface PictureService extends IService<Picture> {
      * @return
      */
     Integer uploadPictureByBatch(PictureUploadByBatchRequest pictureUploadByBatchRequest, User loginUser);
+
+    /**
+     * 删除图片（逻辑删除记录，并按引用数决定是否清理 COS）
+     *
+     * @param pictureId 图片 id
+     * @param loginUser 当前登录用户
+     */
+    void deletePicture(long pictureId, User loginUser);
+
+    /**
+     * 校验当前用户是否有权操作该图片（编辑、删除、查看空间内资源等）。
+     * 公共图库（spaceId 为空）：本人或系统管理员；私人空间：仅图片上传者本人，管理员也不可。
+     */
+    void checkPictureAuth(User loginUser, Picture picture);
+
+    /**
+     * 编辑图片（元数据）
+     */
+    void editPicture(PictureEditRequest pictureEditRequest, User loginUser);
+
+    /**
+     * 批量更新空间内指定图片的分类、标签与按规则重命名
+     */
+    void batchEditPictureMetadata(PictureEditByBatchRequest pictureEditByBatchRequest, User loginUser);
+
+    /**
+     * 清理图片在对象存储中的文件（主图、缩略图等）
+     */
+    void clearPictureFile(Picture picture);
+
+    /**
+     * 按照颜色相似度查询某空间下图片（仅返回有主色调的记录，最多 12 条）
+     *
+     * @param spaceId  空间 id
+     * @param picColor 目标颜色（十六进制）
+     * @param loginUser 当前登录用户
+     */
+    List<PictureVO> searchPictureByColor(Long spaceId, String picColor, User loginUser);
+
+    /**
+     * 创建 AI 扩图任务
+     */
+    CreateOutPaintingTaskResponse createPictureOutPaintingTask(
+            CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest, User loginUser);
 
 }

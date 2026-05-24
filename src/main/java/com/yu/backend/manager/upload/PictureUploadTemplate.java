@@ -3,17 +3,12 @@ package com.yu.backend.manager.upload;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.qcloud.cos.model.PutObjectResult;
-import com.qcloud.cos.model.ciModel.persistence.ImageInfo;
+import com.qcloud.cos.exception.CosServiceException;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.manager.CosManager;
 import com.yu.backend.model.dto.file.UploadPictureResult;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.stereotype.Component;
@@ -79,13 +74,22 @@ public abstract class PictureUploadTemplate {
         String imagePath = generateImageUploadPath(file, uploadPathPrefix);
         try {
             // 5）封装解析到图片信息
-            return analyzeCosReturn(new AnalyzeCosParams(
+            return cosManager.analyzeUploadResult(
                     cosManager.putPictureObject(imagePath, file),
                     FileUtil.mainName(file),
-                    imagePath
-            ));
+                    imagePath,
+                    file);
         } catch (Exception e) {
             log.error("Error uploading picture: {}", ExceptionUtils.getRootCauseMessage(e), e);
+            Throwable root = ExceptionUtils.getRootCause(e);
+            if (root instanceof CosServiceException) {
+                CosServiceException cse = (CosServiceException) root;
+                String code = cse.getErrorCode();
+                String hint = "SignatureDoesNotMatch".equals(code)
+                        ? "COS 密钥或区域与桶不匹配，请在 application-local.yml（或环境变量）中核对 SecretId、SecretKey、region、bucket"
+                        : "对象存储返回 " + (code != null ? code : "错误") + "，请检查 COS 配置与控制台是否一致";
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR, hint);
+            }
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传图片失败");
         } finally {
             try {
@@ -118,30 +122,5 @@ public abstract class PictureUploadTemplate {
                 .map(name -> name.substring(name.lastIndexOf('.') + 1))
                 .map(String::toLowerCase)
                 .orElse("");
-    }
-
-    private UploadPictureResult analyzeCosReturn(AnalyzeCosParams params) {
-        ImageInfo imageInfo = params.getPutObjectResult().getCiUploadResult().getOriginalInfo().getImageInfo();
-        return UploadPictureResult.builder()
-                .picFormat(imageInfo.getFormat())
-                .picHeight(imageInfo.getHeight())
-                .picWidth(imageInfo.getWidth())
-                .picSize((long) imageInfo.getQuality())
-                .picScale(NumberUtil.round(imageInfo.getHeight() * 1.0 / imageInfo.getWidth(), 2).doubleValue())
-                .picName(params.getImageName())
-                .url(String.format("%s/%s", cosManager.getBaseUrl(), params.getImagePath()))
-                .build();
-    }
-
-    /**
-     * 不用成员变量因为多线程时会出问题
-     */
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    private static class AnalyzeCosParams {
-        private PutObjectResult putObjectResult;
-        private String imageName;
-        private String imagePath;
     }
 }

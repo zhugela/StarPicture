@@ -80,7 +80,8 @@ public class FileController {
             //第一步：获得登录用户的信息
         User loginUser = userService.getLoginUser(request);
         //第二步：调用service的上传方法
-        PictureVO pictureVO = pictureService.uploadPicture(multipartFile,pictureUploadRequest,loginUser);
+        PictureVO pictureVO = pictureService.uploadPicture(multipartFile,
+                pictureUploadRequest.toPictureUploadWithUserDTO(loginUser));
         //第三步：返回成功的结果
         return ResultUtils.success(pictureVO);
     }

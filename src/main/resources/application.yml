@@ -34,4 +34,8 @@ knife4j:
     group:
       default:
         api-rule: package
-        api-rule-resource: com.yu.backend.controller
+redis:
+  database: 3
+  host: 127.0.0.1
+  port: 6379
+  timeout: 5000

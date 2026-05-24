@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+@Component("url")
 public class UrlPictureUpload extends PictureUploadTemplate {
 
     private final static List<String> ALLOW_FILE_TYPE = Arrays.asList("image/png", "image/webp", "image/jpeg");

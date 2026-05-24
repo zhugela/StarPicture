@@ -1,12 +1,15 @@
 package com.yu.backend.model.dto.picture;
 
-import lombok.AllArgsConstructor;
+import com.yu.backend.model.entity.User;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+
 /**
+ * 图片上传请求（接口入参）
+ *
  * @author leikooo
  */
 @Data
@@ -25,8 +28,23 @@ public class PictureUploadRequest implements Serializable {
      */
     private String picName;
 
+    /**
+     * 图片 url
+     */
     private String fileUrl;
 
+    /**
+     * 空间 id
+     */
+    private Long spaceId;
+
+    /**
+     * 转为携带登录用户的 DTO，供 {@link com.yu.backend.service.PictureService#uploadPicture} 使用
+     */
+    public PictureUploadWithUserDTO toPictureUploadWithUserDTO(User loginUser) {
+        PictureUploadWithUserDTO pictureUploadWithUserDTO = new PictureUploadWithUserDTO();
+        BeanUtils.copyProperties(this, pictureUploadWithUserDTO);
+        pictureUploadWithUserDTO.setUser(loginUser);
+        return pictureUploadWithUserDTO;
+    }
 }
-
-

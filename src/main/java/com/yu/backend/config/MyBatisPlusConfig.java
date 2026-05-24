@@ -3,13 +3,10 @@ package com.yu.backend.config;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-// todo 注意这个 mapper 改成自己的
-@MapperScan("com.yu.backend.mapper")
 public class MyBatisPlusConfig {
 
     /**

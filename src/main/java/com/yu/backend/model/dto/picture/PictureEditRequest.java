@@ -1,5 +1,7 @@
 package com.yu.backend.model.dto.picture;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +16,7 @@ public class PictureEditRequest implements Serializable {
     /**
      * id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
@@ -35,6 +38,12 @@ public class PictureEditRequest implements Serializable {
      * 标签
      */
     private List<String> tags;
+
+    /**
+     * 空间 id（为空表示公共空间）
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long spaceId;
 
     private static final long serialVersionUID = 1L;
 }

@@ -4,9 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yu.backend.mapper.PictureMapper">
 
-    <resultMap id="BaseResultMap" type="com.yu.backend.mapper.PictureMapper">
+    <resultMap id="BaseResultMap" type="com.yu.backend.model.entity.Picture">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="spaceId" column="spaceId" jdbcType="BIGINT"/>
+        <result property="urls" column="urls" jdbcType="JAVA_OBJECT"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
         <result property="category" column="category" jdbcType="VARCHAR"/>
@@ -28,13 +30,12 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,url,name,
-        introduction,category,tags,
-        picSize,picWidth,picHeight,
-        picScale,picFormat,userId,
-        createTime,editTime,updateTime,
-        isDelete,reviewStatus,reviewMessage,
-        reviewerId,reviewTime
+        id,spaceId,urls,
+        name,introduction,category,
+        tags,picSize,picWidth,
+        picHeight,picScale,picFormat,
+        userId,createTime,editTime,
+        updateTime,isDelete,reviewStatus,
+        reviewMessage,reviewerId,reviewTime
     </sql>
 </mapper>
-

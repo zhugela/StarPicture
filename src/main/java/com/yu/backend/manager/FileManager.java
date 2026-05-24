@@ -1,20 +1,12 @@
 package com.yu.backend.manager;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.yu.backend.config.CosClientConfig;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.model.dto.file.UploadPictureResult;
-import com.qcloud.cos.model.PutObjectResult;
-import com.qcloud.cos.model.ciModel.persistence.ImageInfo;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -26,7 +18,6 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,28 +34,35 @@ public class FileManager {
     public static final List<String> ALLOW_FORMAT_LIST = Arrays.asList("jpeg", "jpg", "png", "webp");
 
     @Resource
-    private CosClientConfig cosClientConfig;
-
-    @Resource
     private CosManager cosManager;
 
 
     public UploadPictureResult uploadPicture2(MultipartFile multipartFile, String uploadPathPrefix) {
         validPicture(multipartFile);
-        // 图片上传地址
+        // 图片上传地址（COS 对象键，不能用作本地临时文件前缀）
         String imagePath = generateImageUploadPath(multipartFile, uploadPathPrefix);
+        File uploadFile = null;
         try {
-            File uploadFile = File.createTempFile(imagePath, null);
+            String ext = FileUtil.getSuffix(multipartFile.getOriginalFilename());
+            String suffix = (ext != null && !ext.isEmpty()) ? "." + ext : ".tmp";
+            uploadFile = File.createTempFile("star_picture_", suffix);
             multipartFile.transferTo(uploadFile);
-            return analyzeCosReturn(new AnalyzeCosParams(cosManager.putPictureObject(imagePath, uploadFile), FileUtil.mainName(multipartFile.getOriginalFilename()), imagePath));
+            return cosManager.analyzeUploadResult(
+                    cosManager.putPictureObject(imagePath, uploadFile),
+                    FileUtil.mainName(multipartFile.getOriginalFilename()),
+                    imagePath,
+                    uploadFile);
         } catch (Exception e) {
             log.error("FileManager#uploadPicture2 error {}", ExceptionUtils.getRootCauseMessage(e));
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传图片失败");
         } finally {
-            try {
-                FileUtil.del(imagePath);
-            } catch (IORuntimeException e) {
-                log.error("FileManager#uploadPicture2 del filePath {}, error {}", imagePath, ExceptionUtils.getRootCauseMessage(e));
+            if (uploadFile != null) {
+                try {
+                    FileUtil.del(uploadFile);
+                } catch (IORuntimeException e) {
+                    log.error("FileManager#uploadPicture2 del temp {}, error {}",
+                            uploadFile.getAbsolutePath(), ExceptionUtils.getRootCauseMessage(e));
+                }
             }
         }
     }
@@ -73,29 +71,15 @@ public class FileManager {
         String imagePath = String.format("%s/%s_%s.%s", uploadPathPrefix, LocalDate.now(),
                 RandomUtil.randomString(16), FileUtil.getSuffix(file.getName()));
         try {
-            return analyzeCosReturn(new AnalyzeCosParams(
+            return cosManager.analyzeUploadResult(
                     cosManager.putPictureObject(imagePath, file),
                     FileUtil.mainName(file.getName()),
-                    imagePath
-            ));
+                    imagePath,
+                    file);
         } catch (Exception e) {
             log.error("FileManager#uploadPicture2 error {}", ExceptionUtils.getRootCauseMessage(e));
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传图片失败");
         }
-    }
-
-    private UploadPictureResult analyzeCosReturn(AnalyzeCosParams analyzeCosParams) {
-        ImageInfo imageInfo = analyzeCosParams.getPutObjectResult().getCiUploadResult().getOriginalInfo().getImageInfo();
-        return UploadPictureResult.builder()
-                .picFormat(imageInfo.getFormat())
-                .picHeight(imageInfo.getHeight())
-                .picWidth(imageInfo.getWidth())
-                .picSize((long) imageInfo.getQuality())
-                .picScale(NumberUtil.round(imageInfo.getHeight() * 1.0 / imageInfo.getWidth(), 2).doubleValue())
-                .picName(analyzeCosParams.getImageName())
-                .url(String.format("%s/%s", cosManager.getBaseUrl(), analyzeCosParams.getImagePath()))
-                .build();
-
     }
 
     private String generateImageUploadPath(MultipartFile multipartFile, String uploadPathPrefix) {
@@ -133,17 +117,5 @@ public class FileManager {
             log.error("file delete error, filepath = {}", file.getAbsolutePath());
         }
     }
-}
-
-/**
- * 不用成员变量因为多线程时会出问题
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class AnalyzeCosParams {
-    private PutObjectResult putObjectResult;
-    private String imageName;
-    private String imagePath;
 }
 

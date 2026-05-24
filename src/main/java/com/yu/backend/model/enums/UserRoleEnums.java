@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static net.sf.jsqlparser.util.validation.metadata.NamedObject.user;
-
 @Getter
 public enum UserRoleEnums {
     USER( "用户","user"),

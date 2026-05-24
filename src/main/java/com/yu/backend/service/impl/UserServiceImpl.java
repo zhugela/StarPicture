@@ -231,7 +231,8 @@ private static final String salt = "zhuzhu";
      */
     @Override
     public boolean isAdmin(User user) {
-        return user != null && UserRoleEnums.ADMIN.getValue().equals(user.getUserRole());
+        // 数据库存 userRole 为英文码（如 admin），与枚举的 text 字段一致，勿用 getValue()（为中文展示名）
+        return user != null && UserRoleEnums.ADMIN.getText().equals(user.getUserRole());
     }
 
 
