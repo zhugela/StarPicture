@@ -1,6 +1,7 @@
 package com.yu.backend.aop;
 
 import com.yu.backend.annotation.AuthCheck;
+import cn.hutool.core.util.StrUtil;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.model.entity.User;
@@ -36,8 +37,11 @@ public class AuthInterceptor {
         User loginuser = userService.getLoginUser(request);
         //获取当前用户的角色
         UserRoleEnums mustRoleEnum = UserRoleEnums.getEnumByValue(mustRole);
+        if (StrUtil.isNotBlank(mustRole) && mustRoleEnum == null) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+        }
         //如果不需要权限放行
-        if(mustRoleEnum == null){
+        if (mustRoleEnum == null) {
             return joinPoint.proceed();
         }
         //以下的代码：必须有权限，拒绝

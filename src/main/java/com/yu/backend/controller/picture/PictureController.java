@@ -90,9 +90,9 @@ public class PictureController {
      */
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @GetMapping("/get")
-    public BaseResponse< Picture> getPictureById( Long id,HttpServletRequest request){
+    public BaseResponse< Picture> getPictureById(@RequestParam("id") Long id, HttpServletRequest request){
         //1.参数校验
-        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(id == null || id <= 0, ErrorCode.PARAMS_ERROR);
         //2.通过id判断图片是否存在
         Picture picture = pictureService.getById(id);
         ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR);
@@ -115,7 +115,19 @@ public class PictureController {
         Picture picture = pictureService.getById(id);
         ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR);
         Long spaceId = picture.getSpaceId();
-        if (spaceId != null) {
+        if (spaceId == null) {
+            User loginUser = null;
+            try {
+                loginUser = userService.getLoginUser(request);
+            } catch (BusinessException ignored) {
+            }
+            boolean canView = loginUser != null
+                    && (loginUser.getId().equals(picture.getUserId()) || userService.isAdmin(loginUser));
+            if (!canView) {
+                ThrowUtils.throwIf(!PictureReviewStatusEnum.PASS.getValue().equals(picture.getReviewStatus()),
+                        ErrorCode.NOT_FOUND_ERROR);
+            }
+        } else {
             User loginUser = userService.getLoginUser(request);
             pictureService.checkPictureAuth(loginUser, picture);
         }
@@ -196,7 +208,7 @@ public class PictureController {
         ThrowUtils.throwIf(pictureQueryRequest == null, ErrorCode.PARAMS_ERROR);
         long current = pictureQueryRequest.getCurrent();
         long size = pictureQueryRequest.getPageSize();
-        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(size <= 0 || size > 20, ErrorCode.PARAMS_ERROR, "pageSize 不能超过 20");
         preparePictureQueryForList(pictureQueryRequest, request);
         Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
                 pictureService.getQueryWrapper(pictureQueryRequest));
@@ -212,7 +224,7 @@ public class PictureController {
         ThrowUtils.throwIf(pictureQueryRequest == null, ErrorCode.PARAMS_ERROR);
         long current = pictureQueryRequest.getCurrent();
         long size = pictureQueryRequest.getPageSize();
-        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(size <= 0 || size > 20, ErrorCode.PARAMS_ERROR, "pageSize 不能超过 20");
         preparePictureQueryForList(pictureQueryRequest, request);
         String queryCondition = JSONUtil.toJsonStr(pictureQueryRequest);
         String hashKey = DigestUtils.md5DigestAsHex(queryCondition.getBytes());
@@ -301,9 +313,24 @@ public class PictureController {
     private void preparePictureQueryForList(PictureQueryRequest pictureQueryRequest, HttpServletRequest request) {
         Long spaceId = pictureQueryRequest.getSpaceId();
         if (spaceId == null) {
-            pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
             pictureQueryRequest.setNullSpaceId(true);
+            Long queryUserId = pictureQueryRequest.getUserId();
+            if (queryUserId != null) {
+                try {
+                    User loginUser = userService.getLoginUser(request);
+                    if (loginUser.getId().equals(queryUserId)) {
+                        pictureQueryRequest.setReviewStatus(null);
+                    } else {
+                        pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
+                    }
+                } catch (BusinessException e) {
+                    pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
+                }
+            } else {
+                pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
+            }
         } else {
+            pictureQueryRequest.setNullSpaceId(false);
             User loginUser = userService.getLoginUser(request);
             Space space = spaceMapper.selectById(spaceId);
             ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");

@@ -11,13 +11,15 @@ import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.model.dto.user.UserAddRequest;
 import com.yu.backend.model.dto.user.UserLoginRequest;
 import com.yu.backend.model.dto.user.UserQueryRequest;
+import com.yu.backend.model.dto.user.UserUpdateMyRequest;
 import com.yu.backend.model.dto.user.UserRegisterRequest;
+import com.yu.backend.model.dto.user.WxLoginRequest;
+import cn.hutool.core.util.StrUtil;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.entity.UserUpdateRequest;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.model.vo.UserVO;
 import com.yu.backend.service.UserService;
-import org.apache.coyote.Request;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,6 +71,17 @@ public class UserController {
         return ResultUtils.success(loginUserVo);
 
     }
+
+    /**
+     * 微信小程序登录（wx.login code）
+     */
+    @PostMapping("/wx/login")
+    public BaseResponse<LoginUserVo> wxLogin(@RequestBody WxLoginRequest wxLoginRequest) {
+        ThrowUtils.throwIf(wxLoginRequest == null, ErrorCode.PARAMS_ERROR);
+        LoginUserVo loginUserVo = userService.wxLogin(wxLoginRequest);
+        return ResultUtils.success(loginUserVo);
+    }
+
     /*
     *  获取用户信息
      */
@@ -76,6 +89,30 @@ public class UserController {
     public BaseResponse<LoginUserVo> getLoginUser(HttpServletRequest request){
         User user = userService.getLoginUser(request);
         return ResultUtils.success(userService.getLoginUserVO(user));
+    }
+
+    /**
+     * 当前登录用户更新自己的资料（昵称、头像、简介）
+     */
+    @PostMapping("/update/my")
+    public BaseResponse<Boolean> updateMyProfile(@RequestBody UserUpdateMyRequest userUpdateMyRequest,
+                                                 HttpServletRequest request) {
+        ThrowUtils.throwIf(userUpdateMyRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        User updateUser = new User();
+        updateUser.setId(loginUser.getId());
+        if (StrUtil.isNotBlank(userUpdateMyRequest.getUserName())) {
+            updateUser.setUserName(userUpdateMyRequest.getUserName().trim());
+        }
+        if (userUpdateMyRequest.getUserAvatar() != null) {
+            updateUser.setUserAvatar(userUpdateMyRequest.getUserAvatar().trim());
+        }
+        if (userUpdateMyRequest.getUserProfile() != null) {
+            updateUser.setUserProfile(userUpdateMyRequest.getUserProfile().trim());
+        }
+        boolean result = userService.updateById(updateUser);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "更新失败");
+        return ResultUtils.success(true);
     }
 
     /**
@@ -95,7 +132,8 @@ public class UserController {
         //3.设置一个默认密码常量，还要对密码进行加密
          String DEFAULT_PASSWORD = "12345678";
          user.setUserPassword(userService.getEncryptPassword(DEFAULT_PASSWORD));
-        //4.返回成功之后的数据
+         boolean saved = userService.save(user);
+         ThrowUtils.throwIf(!saved, ErrorCode.OPERATION_ERROR, "创建用户失败");
         return ResultUtils.success(user.getId());
     }
 
@@ -106,14 +144,11 @@ public class UserController {
      */
     @AuthCheck(mustRole = "admin")
     @GetMapping("/get")
-    public BaseResponse<User> getUserById(@PathVariable long id) {
-        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
-
-        //2.从Userservice里面获取用户信息
+    public BaseResponse<UserVO> getUserById(@RequestParam("id") Long id) {
+        ThrowUtils.throwIf(id == null || id <= 0, ErrorCode.PARAMS_ERROR);
         User user = userService.getById(id);
-        ThrowUtils.throwIf(user == null,ErrorCode.NOT_FOUND_ERROR);
-        //3.返回成功信息
-        return ResultUtils.success(user);
+        ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR);
+        return ResultUtils.success(userService.getUserVO(user));
     }
 
     /**
@@ -122,15 +157,10 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/vo")
-    public BaseResponse<UserVO> getUserVOById(Long id){
-        //1.检查参数
-        ThrowUtils.throwIf(id<=0,ErrorCode.NOT_FOUND_ERROR);
-
-        //2.获取user里面的信息
+    public BaseResponse<UserVO> getUserVOById(@RequestParam("id") Long id){
+        ThrowUtils.throwIf(id == null || id <= 0, ErrorCode.PARAMS_ERROR);
         User user = userService.getById(id);
-        ThrowUtils.throwIf(user == null, ErrorCode.PARAMS_ERROR);
-
-        //3.把user里面的数据复制到uservo里面
+        ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR);
         return ResultUtils.success(userService.getUserVO(user));
     }
 
@@ -162,7 +192,8 @@ public class UserController {
     @PostMapping("/update")
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
         // 检查参数
-        ThrowUtils.throwIf(userUpdateRequest == null || userUpdateRequest.getId() < 0, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(userUpdateRequest == null || userUpdateRequest.getId() == null
+                || userUpdateRequest.getId() <= 0, ErrorCode.PARAMS_ERROR);
 
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequest, user);

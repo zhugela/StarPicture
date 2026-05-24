@@ -52,7 +52,10 @@ public class User implements Serializable {
      */
     private String userRole;
 
-
+    /**
+     * 微信小程序 openId
+     */
+    private String mpOpenId;
 
     /**
      * 编辑时间

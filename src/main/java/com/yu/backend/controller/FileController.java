@@ -1,12 +1,17 @@
 package com.yu.backend.controller;
 
 import com.qcloud.cos.transfer.Upload;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.yu.backend.annotation.AuthCheck;
+import com.yu.backend.config.CosClientProperties;
 import com.yu.backend.common.BaseResponse;
 import com.yu.backend.common.ResultUtils;
 import com.yu.backend.constant.UserConstant;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
+import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.manager.CosManager;
 import com.yu.backend.model.dto.file.UploadPictureResult;
 import com.yu.backend.model.dto.picture.PictureUploadRequest;
@@ -15,6 +20,7 @@ import com.yu.backend.model.vo.PictureVO;
 import com.yu.backend.service.PictureService;
 import com.yu.backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -37,6 +43,9 @@ public class FileController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private CosClientProperties cosClientProperties;
     
     /**
      * 测试文件上传  
@@ -76,7 +85,11 @@ public class FileController {
      */
     @PostMapping("/upload")
     public BaseResponse<PictureVO> UploadPicture(@RequestPart("file") MultipartFile multipartFile,
-                                                 PictureUploadRequest pictureUploadRequest, HttpServletRequest request){
+                                                 @ModelAttribute PictureUploadRequest pictureUploadRequest,
+                                                 HttpServletRequest request){
+        if (pictureUploadRequest == null) {
+            pictureUploadRequest = new PictureUploadRequest();
+        }
             //第一步：获得登录用户的信息
         User loginUser = userService.getLoginUser(request);
         //第二步：调用service的上传方法
@@ -84,5 +97,33 @@ public class FileController {
                 pictureUploadRequest.toPictureUploadWithUserDTO(loginUser));
         //第三步：返回成功的结果
         return ResultUtils.success(pictureVO);
+    }
+
+    /**
+     * 上传用户头像（仅存储，不写入图片表）
+     */
+    @PostMapping("/upload/avatar")
+    public BaseResponse<String> uploadAvatar(@RequestPart("file") MultipartFile multipartFile,
+                                             HttpServletRequest request) {
+        userService.getLoginUser(request);
+        ThrowUtils.throwIf(multipartFile == null || multipartFile.isEmpty(), ErrorCode.PARAMS_ERROR, "请选择文件");
+        String original = multipartFile.getOriginalFilename();
+        String ext = StrUtil.blankToDefault(FileUtil.extName(original), "jpg");
+        String filepath = String.format("/avatar/%s.%s", IdUtil.simpleUUID(), ext);
+        File file = null;
+        try {
+            file = File.createTempFile("avatar", null);
+            multipartFile.transferTo(file);
+            cosManager.putObject(filepath, file);
+            String url = String.format("%s%s", cosClientProperties.getHost(), filepath);
+            return ResultUtils.success(url);
+        } catch (Exception e) {
+            log.error("avatar upload error, filepath = {}", filepath, e);
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "头像上传失败");
+        } finally {
+            if (file != null && !file.delete()) {
+                log.warn("avatar temp file delete failed");
+            }
+        }
     }
 }

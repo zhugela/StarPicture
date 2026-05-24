@@ -4,6 +4,7 @@ package com.yu.backend.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yu.backend.model.dto.user.UserQueryRequest;
+import com.yu.backend.model.dto.user.WxLoginRequest;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.model.vo.UserVO;
@@ -70,5 +71,10 @@ public interface UserService extends IService<User> {
      */
     boolean userLogout(HttpServletRequest request);
     boolean isAdmin(User user);
+
+    /**
+     * 微信小程序 code 登录，返回用户信息及 JWT token
+     */
+    LoginUserVo wxLogin(WxLoginRequest wxLoginRequest);
 
 }

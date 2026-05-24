@@ -15,4 +15,11 @@ public interface UserConstant {
     *  管理员角色
      */
     String ADMIN_ROLE = "admin";
+
+    /**
+     * 小程序 Bearer Token 请求头
+     */
+    String AUTHORIZATION_HEADER = "Authorization";
+
+    String TOKEN_PREFIX = "Bearer ";
 }

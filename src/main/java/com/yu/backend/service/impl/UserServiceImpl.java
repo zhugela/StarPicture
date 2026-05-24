@@ -2,26 +2,35 @@ package com.yu.backend.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.yu.backend.config.WxMiniAppProperties;
 import com.yu.backend.constant.UserConstant;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
+import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.model.dto.user.UserQueryRequest;
+import com.yu.backend.model.dto.user.WxLoginRequest;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.enums.UserRoleEnums;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.model.vo.UserVO;
 import com.yu.backend.service.UserService;
 import com.yu.backend.mapper.UserMapper;
+import com.yu.backend.utils.JwtUtils;
 
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -34,6 +43,8 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
+    @Resource
+    private WxMiniAppProperties wxMiniAppProperties;
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -115,7 +126,11 @@ private static final String salt = "zhuzhu";
         //4.将用户信息存到Session，记录登录态
         httpRequest.getSession().setAttribute(UserConstant.USER_LOGIN,user);
 
-        return this.getLoginUserVO(user);
+        LoginUserVo loginUserVo = this.getLoginUserVO(user);
+        loginUserVo.setToken(JwtUtils.createToken(user.getId(),
+                wxMiniAppProperties.getTokenSecret(),
+                wxMiniAppProperties.getTokenExpireDays()));
+        return loginUserVo;
     }
     /**
      * 获取脱敏类的用户信息
@@ -139,21 +154,110 @@ private static final String salt = "zhuzhu";
      */
     @Override
     public User getLoginUser(HttpServletRequest request) {
+        User tokenUser = getLoginUserByToken(request);
+        if (tokenUser != null) {
+            return tokenUser;
+        }
         // 1. 从 Session 中取出用户信息
-        //    - 用 request.getSession().getAttribute(...) 获取
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN);
         User currentUser = (User) userObj;
-        if(currentUser == null || currentUser.getId() == null){
+        if (currentUser == null || currentUser.getId() == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
-        // 从数据库中查询（追求性能的话可以注释，直接返回上述结果）
         Long userId = currentUser.getId();
         currentUser = this.getById(userId);
         if (currentUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
-        // 3. 返回用户信息
         return currentUser;
+    }
+
+    @Override
+    public LoginUserVo wxLogin(WxLoginRequest wxLoginRequest) {
+        ThrowUtils.throwIf(wxLoginRequest == null, ErrorCode.PARAMS_ERROR);
+        String code = wxLoginRequest.getCode();
+        String nickName = StrUtil.trim(wxLoginRequest.getNickName());
+        String avatarUrl = StrUtil.trim(wxLoginRequest.getAvatarUrl());
+        ThrowUtils.throwIf(StrUtil.isBlank(code), ErrorCode.PARAMS_ERROR, "code 不能为空");
+        ThrowUtils.throwIf(StrUtil.isBlank(wxMiniAppProperties.getAppId())
+                        || StrUtil.isBlank(wxMiniAppProperties.getAppSecret())
+                        || wxMiniAppProperties.getAppSecret().contains("请填写"),
+                ErrorCode.SYSTEM_ERROR, "请先在 application-local.yml 配置 wx.miniapp.app-secret");
+
+        String url = String.format(
+                "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+                wxMiniAppProperties.getAppId(),
+                wxMiniAppProperties.getAppSecret(),
+                code);
+        String body = HttpUtil.get(url);
+        JSONObject json = JSONUtil.parseObj(body);
+        if (json.containsKey("errcode") && json.getInt("errcode") != 0) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR,
+                    "微信登录失败：" + json.getStr("errmsg", body));
+        }
+        String openId = json.getStr("openid");
+        ThrowUtils.throwIf(StrUtil.isBlank(openId), ErrorCode.OPERATION_ERROR, "未获取到 openId");
+
+        User user = this.lambdaQuery().eq(User::getMpOpenId, openId).one();
+        if (user == null) {
+            user = new User();
+            user.setMpOpenId(openId);
+            user.setUserAccount("wx" + DigestUtils.md5DigestAsHex(openId.getBytes()).substring(0, 16));
+            user.setUserPassword(getEncryptPassword(RandomUtil.randomString(32)));
+            user.setUserName(StrUtil.isNotBlank(nickName) ? nickName : "微信用户");
+            user.setUserAvatar(StrUtil.isNotBlank(avatarUrl) ? avatarUrl : null);
+            user.setUserRole(UserConstant.DEFAULT_ROLE);
+            boolean saved = this.save(user);
+            ThrowUtils.throwIf(!saved, ErrorCode.SYSTEM_ERROR, "创建用户失败");
+        } else {
+            applyWxProfile(user, nickName, avatarUrl);
+        }
+
+        LoginUserVo loginUserVo = getLoginUserVO(user);
+        loginUserVo.setToken(JwtUtils.createToken(user.getId(),
+                wxMiniAppProperties.getTokenSecret(),
+                wxMiniAppProperties.getTokenExpireDays()));
+        return loginUserVo;
+    }
+
+    /** 用户授权昵称/头像后同步到资料（不覆盖用户自行修改过的非默认昵称） */
+    private void applyWxProfile(User user, String nickName, String avatarUrl) {
+        boolean changed = false;
+        if (StrUtil.isNotBlank(nickName)
+                && (StrUtil.isBlank(user.getUserName()) || "微信用户".equals(user.getUserName()))) {
+            user.setUserName(nickName);
+            changed = true;
+        }
+        if (StrUtil.isNotBlank(avatarUrl) && StrUtil.isBlank(user.getUserAvatar())) {
+            user.setUserAvatar(avatarUrl);
+            changed = true;
+        }
+        if (changed) {
+            this.updateById(user);
+        }
+    }
+
+    private User getLoginUserByToken(HttpServletRequest request) {
+        String authHeader = request.getHeader(UserConstant.AUTHORIZATION_HEADER);
+        if (StrUtil.isBlank(authHeader) || !authHeader.startsWith(UserConstant.TOKEN_PREFIX)) {
+            return null;
+        }
+        String token = authHeader.substring(UserConstant.TOKEN_PREFIX.length()).trim();
+        if (StrUtil.isBlank(token)) {
+            return null;
+        }
+        try {
+            Long userId = JwtUtils.getUserId(token, wxMiniAppProperties.getTokenSecret());
+            User user = this.getById(userId);
+            if (user == null) {
+                throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+            }
+            return user;
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR, "登录已失效");
+        }
     }
 
     /**
@@ -198,12 +302,13 @@ private static final String salt = "zhuzhu";
         //2.根据查询对象啊生成查询条件
         String userName = userQueryRequest.getUserName();
         String userAccount = userQueryRequest.getUserAccount();
-        long id = userQueryRequest.getId();
+        Long id = userQueryRequest.getId();
         String userRole = userQueryRequest.getUserRole();
         String userprofile = userQueryRequest.getUserProfile();
 
-        //3将获得的查询条件跟用户传输进来的数据比对
-        queryWrapper.eq(ObjectUtil.isNotNull(id),"id",id);
+        if (id != null && id > 0) {
+            queryWrapper.eq("id", id);
+        }
         queryWrapper.like(StrUtil.isNotBlank(userName),"userName",userName);
         queryWrapper.like(StrUtil.isNotBlank(userAccount),"userAccount",userAccount);
         queryWrapper.eq(StrUtil.isNotBlank(userRole),"userRole",userRole);
@@ -214,13 +319,10 @@ private static final String salt = "zhuzhu";
 
     @Override
     public boolean userLogout(HttpServletRequest request) {
-        // 先判断是否已登录
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN);
-        if (userObj == null) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "未登录");
+        if (userObj != null) {
+            request.getSession().removeAttribute(UserConstant.USER_LOGIN);
         }
-        // 移除登录态
-        request.getSession().removeAttribute(UserConstant.USER_LOGIN);
         return true;
     }
 
