@@ -43,10 +43,8 @@ public abstract class PictureUploadTemplate {
     public UploadPictureResult uploadPicture(Object obj, String uploadPathPrefix) {
         // 1）校验文件
         checkParamSource(obj);
-        // 2）获取上传地址
-        String templatePath = System.getProperty("user.dir") +
-                File.separator + getOriginFilename(obj);
-        File tempFile = new File(templatePath);
+        // 2）写入系统临时目录，避免 URL 等来源产生非法路径
+        File tempFile = new File(System.getProperty("java.io.tmpdir"), getOriginFilename(obj));
         // 3）获取本地临时文件
         File file = processFile(obj, tempFile);
         // 4）上传文件到对象存储

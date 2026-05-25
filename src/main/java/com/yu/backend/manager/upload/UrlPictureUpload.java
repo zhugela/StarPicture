@@ -1,6 +1,5 @@
 package com.yu.backend.manager.upload;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -72,8 +73,25 @@ public class UrlPictureUpload extends PictureUploadTemplate {
 
     @Override
     protected String getOriginFilename(Object object) {
-        String url = (String) object;
-        return FileUtil.mainName(url) + "." + FileUtil.getSuffix(url);
+        String fileUrl = (String) object;
+        try {
+            URL url = new URL(fileUrl);
+            String path = url.getPath();
+            String name = StrUtil.subAfter(path, "/", true);
+            if (StrUtil.isBlank(name) || !name.contains(".")) {
+                name = "url_upload_" + System.currentTimeMillis() + ".jpg";
+            } else {
+                name = URLDecoder.decode(name, StandardCharsets.UTF_8);
+            }
+            return sanitizeFilename(name);
+        } catch (Exception e) {
+            return "url_upload_" + System.currentTimeMillis() + ".jpg";
+        }
+    }
+
+    /** Windows 文件名非法字符：\ / : * ? " < > | */
+    private String sanitizeFilename(String filename) {
+        return filename.replaceAll("[\\\\/:*?\"<>|]", "_");
     }
 }
 
