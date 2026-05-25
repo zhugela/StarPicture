@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -124,7 +125,7 @@ public class PictureController {
             boolean canView = loginUser != null
                     && (loginUser.getId().equals(picture.getUserId()) || userService.isAdmin(loginUser));
             if (!canView) {
-                ThrowUtils.throwIf(!PictureReviewStatusEnum.PASS.getValue().equals(picture.getReviewStatus()),
+                ThrowUtils.throwIf(!Objects.equals(picture.getReviewStatus(), PictureReviewStatusEnum.PASS.getValue()),
                         ErrorCode.NOT_FOUND_ERROR);
             }
         } else {
