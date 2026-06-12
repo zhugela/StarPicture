@@ -18,4 +18,9 @@ public class SearchPictureByPictureRequest implements Serializable {
      * 图片 id
      */
     private Long pictureId;
+
+    /**
+     * 空间 id（分表路由键）
+     */
+    private Long spaceId;
 }

@@ -13,7 +13,6 @@ import com.yu.backend.model.dto.user.UserLoginRequest;
 import com.yu.backend.model.dto.user.UserQueryRequest;
 import com.yu.backend.model.dto.user.UserUpdateMyRequest;
 import com.yu.backend.model.dto.user.UserRegisterRequest;
-import com.yu.backend.model.dto.user.WxLoginRequest;
 import cn.hutool.core.util.StrUtil;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.entity.UserUpdateRequest;
@@ -70,16 +69,6 @@ public class UserController {
         //返回成功数据
         return ResultUtils.success(loginUserVo);
 
-    }
-
-    /**
-     * 微信小程序登录（wx.login code）
-     */
-    @PostMapping("/wx/login")
-    public BaseResponse<LoginUserVo> wxLogin(@RequestBody WxLoginRequest wxLoginRequest) {
-        ThrowUtils.throwIf(wxLoginRequest == null, ErrorCode.PARAMS_ERROR);
-        LoginUserVo loginUserVo = userService.wxLogin(wxLoginRequest);
-        return ResultUtils.success(loginUserVo);
     }
 
     /*

@@ -26,6 +26,11 @@ public class SpaceVO implements Serializable {
     private Integer spaceLevel;
 
     /**
+     * 空间类型：0-私有 1-团队
+     */
+    private Integer spaceType;
+
+    /**
      * 空间图片的最大总大小
      */
     private Long maxSize;
@@ -69,6 +74,11 @@ public class SpaceVO implements Serializable {
      * 创建用户信息
      */
     private UserVO user;
+
+    /**
+     * 当前用户在该空间内的权限列表
+     */
+    private java.util.List<String> permissionList;
 
     private static final long serialVersionUID = 1L;
 

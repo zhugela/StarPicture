@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 微信公众号服务器配置与消息回调（与小程序共用同一后端）
+ * 微信公众号服务器配置与消息回调
  */
 @Api(tags = "微信公众号")
 @RestController

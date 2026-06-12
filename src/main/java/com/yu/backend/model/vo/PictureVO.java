@@ -145,6 +145,11 @@ public class PictureVO {
      */
     private UserVO user;
 
+    /**
+     * 当前用户在该图片所属空间内的权限列表
+     */
+    private List<String> permissionList;
+
     private static final long serialVersionUID = 1L;
 
     private static Picture voToObj(PictureVO pictureVO) {

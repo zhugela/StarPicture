@@ -2,21 +2,16 @@ package com.yu.backend.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.yu.backend.config.WxMiniAppProperties;
+import com.yu.backend.config.JwtProperties;
 import com.yu.backend.constant.UserConstant;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
 import com.yu.backend.model.dto.user.UserQueryRequest;
-import com.yu.backend.model.dto.user.WxLoginRequest;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.enums.UserRoleEnums;
 import com.yu.backend.model.vo.LoginUserVo;
@@ -44,7 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
     @Resource
-    private WxMiniAppProperties wxMiniAppProperties;
+    private JwtProperties jwtProperties;
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -128,8 +123,8 @@ private static final String salt = "zhuzhu";
 
         LoginUserVo loginUserVo = this.getLoginUserVO(user);
         loginUserVo.setToken(JwtUtils.createToken(user.getId(),
-                wxMiniAppProperties.getTokenSecret(),
-                wxMiniAppProperties.getTokenExpireDays()));
+                jwtProperties.getSecret(),
+                jwtProperties.getExpireDays()));
         return loginUserVo;
     }
     /**
@@ -172,71 +167,6 @@ private static final String salt = "zhuzhu";
         return currentUser;
     }
 
-    @Override
-    public LoginUserVo wxLogin(WxLoginRequest wxLoginRequest) {
-        ThrowUtils.throwIf(wxLoginRequest == null, ErrorCode.PARAMS_ERROR);
-        String code = wxLoginRequest.getCode();
-        String nickName = StrUtil.trim(wxLoginRequest.getNickName());
-        String avatarUrl = StrUtil.trim(wxLoginRequest.getAvatarUrl());
-        ThrowUtils.throwIf(StrUtil.isBlank(code), ErrorCode.PARAMS_ERROR, "code 不能为空");
-        ThrowUtils.throwIf(StrUtil.isBlank(wxMiniAppProperties.getAppId())
-                        || StrUtil.isBlank(wxMiniAppProperties.getAppSecret())
-                        || wxMiniAppProperties.getAppSecret().contains("请填写"),
-                ErrorCode.SYSTEM_ERROR, "请先在 application-local.yml 配置 wx.miniapp.app-secret");
-
-        String url = String.format(
-                "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-                wxMiniAppProperties.getAppId(),
-                wxMiniAppProperties.getAppSecret(),
-                code);
-        String body = HttpUtil.get(url);
-        JSONObject json = JSONUtil.parseObj(body);
-        if (json.containsKey("errcode") && json.getInt("errcode") != 0) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR,
-                    "微信登录失败：" + json.getStr("errmsg", body));
-        }
-        String openId = json.getStr("openid");
-        ThrowUtils.throwIf(StrUtil.isBlank(openId), ErrorCode.OPERATION_ERROR, "未获取到 openId");
-
-        User user = this.lambdaQuery().eq(User::getMpOpenId, openId).one();
-        if (user == null) {
-            user = new User();
-            user.setMpOpenId(openId);
-            user.setUserAccount("wx" + DigestUtils.md5DigestAsHex(openId.getBytes()).substring(0, 16));
-            user.setUserPassword(getEncryptPassword(RandomUtil.randomString(32)));
-            user.setUserName(StrUtil.isNotBlank(nickName) ? nickName : "微信用户");
-            user.setUserAvatar(StrUtil.isNotBlank(avatarUrl) ? avatarUrl : null);
-            user.setUserRole(UserConstant.DEFAULT_ROLE);
-            boolean saved = this.save(user);
-            ThrowUtils.throwIf(!saved, ErrorCode.SYSTEM_ERROR, "创建用户失败");
-        } else {
-            applyWxProfile(user, nickName, avatarUrl);
-        }
-
-        LoginUserVo loginUserVo = getLoginUserVO(user);
-        loginUserVo.setToken(JwtUtils.createToken(user.getId(),
-                wxMiniAppProperties.getTokenSecret(),
-                wxMiniAppProperties.getTokenExpireDays()));
-        return loginUserVo;
-    }
-
-    /** 用户授权昵称/头像后同步到资料（不覆盖用户自行修改过的非默认昵称） */
-    private void applyWxProfile(User user, String nickName, String avatarUrl) {
-        boolean changed = false;
-        if (StrUtil.isNotBlank(nickName)
-                && (StrUtil.isBlank(user.getUserName()) || "微信用户".equals(user.getUserName()))) {
-            user.setUserName(nickName);
-            changed = true;
-        }
-        if (StrUtil.isNotBlank(avatarUrl) && StrUtil.isBlank(user.getUserAvatar())) {
-            user.setUserAvatar(avatarUrl);
-            changed = true;
-        }
-        if (changed) {
-            this.updateById(user);
-        }
-    }
-
     private User getLoginUserByToken(HttpServletRequest request) {
         String authHeader = request.getHeader(UserConstant.AUTHORIZATION_HEADER);
         if (StrUtil.isBlank(authHeader) || !authHeader.startsWith(UserConstant.TOKEN_PREFIX)) {
@@ -247,7 +177,7 @@ private static final String salt = "zhuzhu";
             return null;
         }
         try {
-            Long userId = JwtUtils.getUserId(token, wxMiniAppProperties.getTokenSecret());
+            Long userId = JwtUtils.getUserId(token, jwtProperties.getSecret());
             User user = this.getById(userId);
             if (user == null) {
                 throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);

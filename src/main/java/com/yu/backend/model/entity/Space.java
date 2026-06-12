@@ -25,6 +25,11 @@ public class Space implements Serializable {
 
     private Integer spaceLevel;
 
+    /**
+     * 空间类型：0-私有 1-团队
+     */
+    private Integer spaceType;
+
     private Long maxSize;
 
     private Long maxCount;

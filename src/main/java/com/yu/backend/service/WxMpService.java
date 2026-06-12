@@ -16,7 +16,7 @@ public interface WxMpService {
     String handleMessage(String requestBody, String signature, String timestamp, String nonce);
 
     /**
-     * 创建默认自定义菜单（含跳转小程序）
+     * 创建默认自定义菜单
      */
     void createDefaultMenu();
 }

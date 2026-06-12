@@ -18,16 +18,22 @@ import com.yu.backend.common.BaseResponse;
 import com.yu.backend.common.DeleteRequest;
 import com.yu.backend.common.ResultUtils;
 import com.yu.backend.constant.UserConstant;
+import com.yu.backend.constant.PictureConstant;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
 import com.yu.backend.exception.ThrowUtils;
+import com.yu.backend.constant.SpaceUserPermissionConstant;
+import com.yu.backend.context.SpaceUserAuthContextHolder;
+import com.yu.backend.manager.SpaceUserAuthManager;
 import com.yu.backend.mapper.SpaceMapper;
+import com.yu.backend.model.dto.space.SpaceUserAuthContext;
 import com.yu.backend.model.dto.picture.*;
 import com.yu.backend.model.entity.Picture;
 import com.yu.backend.model.entity.Urls;
 import com.yu.backend.model.entity.Space;
 import com.yu.backend.model.entity.User;
 import com.yu.backend.model.enums.PictureReviewStatusEnum;
+import com.yu.backend.model.enums.SpaceTypeEnum;
 import com.yu.backend.model.vo.PictureVO;
 import com.yu.backend.service.PictureService;
 import com.yu.backend.service.UserService;
@@ -83,7 +89,7 @@ public class PictureController {
         ThrowUtils.throwIf(deleteRequest == null || deleteRequest.getId() == null || deleteRequest.getId() <= 0,
                 ErrorCode.PARAMS_ERROR);
         User loginUser = userService.getLoginUser(request);
-        pictureService.deletePicture(deleteRequest.getId(), loginUser);
+        pictureService.deletePicture(deleteRequest.getId(), deleteRequest.getSpaceId(), loginUser);
         return ResultUtils.success(true);
     }
     /**
@@ -91,11 +97,13 @@ public class PictureController {
      */
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @GetMapping("/get")
-    public BaseResponse< Picture> getPictureById(@RequestParam("id") Long id, HttpServletRequest request){
+    public BaseResponse< Picture> getPictureById(@RequestParam("id") Long id,
+                                                 @RequestParam(value = "spaceId", required = false) Long spaceId,
+                                                 HttpServletRequest request){
         //1.参数校验
         ThrowUtils.throwIf(id == null || id <= 0, ErrorCode.PARAMS_ERROR);
         //2.通过id判断图片是否存在
-        Picture picture = pictureService.getById(id);
+        Picture picture = pictureService.getPicture(id, spaceId);
         ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR);
         //3.获取照片
         return ResultUtils.success(picture);
@@ -104,19 +112,25 @@ public class PictureController {
      * 根据id获取图片（封装类）
      */
     @GetMapping("/get/vo")
-    public BaseResponse<PictureVO> getPictureVOById(@RequestParam("id") String idStr, HttpServletRequest request) {
+    public BaseResponse<PictureVO> getPictureVOById(@RequestParam("id") String idStr,
+                                                    @RequestParam(value = "spaceId", required = false) String spaceIdStr,
+                                                    HttpServletRequest request) {
         ThrowUtils.throwIf(StrUtil.isBlank(idStr), ErrorCode.PARAMS_ERROR);
         Long id;
+        Long querySpaceId = null;
         try {
             id = Long.parseLong(idStr.trim());
+            if (StrUtil.isNotBlank(spaceIdStr)) {
+                querySpaceId = Long.parseLong(spaceIdStr.trim());
+            }
         } catch (NumberFormatException e) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "id 格式错误");
         }
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
-        Picture picture = pictureService.getById(id);
+        Picture picture = pictureService.getPicture(id, querySpaceId);
         ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR);
         Long spaceId = picture.getSpaceId();
-        if (spaceId == null) {
+        if (PictureConstant.isPublicSpace(spaceId)) {
             User loginUser = null;
             try {
                 loginUser = userService.getLoginUser(request);
@@ -130,6 +144,9 @@ public class PictureController {
             }
         } else {
             User loginUser = userService.getLoginUser(request);
+            List<String> permissionList = resolvePermissionList(loginUser, request);
+            boolean hasPermission = SpaceUserAuthManager.hasPermission(permissionList, SpaceUserPermissionConstant.PICTURE_VIEW);
+            ThrowUtils.throwIf(!hasPermission, ErrorCode.NO_AUTH_ERROR);
             pictureService.checkPictureAuth(loginUser, picture);
         }
         return ResultUtils.success(pictureService.getPictureVO(picture, request));
@@ -180,7 +197,7 @@ public class PictureController {
         pictureService.fillReviewParams(picture, loginUser);
 
         // 判断图片是否存在（加上这段）
-        Picture oldPicture = pictureService.getById(pictureUpdateRequest.getId());
+        Picture oldPicture = pictureService.getPicture(pictureUpdateRequest.getId(), pictureUpdateRequest.getSpaceId());
         ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
         // 更新
         boolean result = pictureService.updateById(picture);
@@ -313,7 +330,7 @@ public class PictureController {
      */
     private void preparePictureQueryForList(PictureQueryRequest pictureQueryRequest, HttpServletRequest request) {
         Long spaceId = pictureQueryRequest.getSpaceId();
-        if (spaceId == null) {
+        if (PictureConstant.isPublicSpace(spaceId)) {
             pictureQueryRequest.setNullSpaceId(true);
             Long queryUserId = pictureQueryRequest.getUserId();
             if (queryUserId != null) {
@@ -333,12 +350,25 @@ public class PictureController {
         } else {
             pictureQueryRequest.setNullSpaceId(false);
             User loginUser = userService.getLoginUser(request);
+            List<String> permissionList = resolvePermissionList(loginUser, request);
+            boolean hasPermission = SpaceUserAuthManager.hasPermission(permissionList, SpaceUserPermissionConstant.PICTURE_VIEW);
+            ThrowUtils.throwIf(!hasPermission, ErrorCode.NO_AUTH_ERROR);
             Space space = spaceMapper.selectById(spaceId);
             ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
-            if (!loginUser.getId().equals(space.getUserId())) {
+            if (SpaceTypeEnum.PRIVATE.getValue() == space.getSpaceType()
+                    && !loginUser.getId().equals(space.getUserId())
+                    && !userService.isAdmin(loginUser)) {
                 throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "没有空间权限");
             }
         }
+    }
+
+    private List<String> resolvePermissionList(User loginUser, HttpServletRequest request) {
+        SpaceUserAuthContext authContext = SpaceUserAuthContextHolder.get(loginUser.getId().toString());
+        if (authContext != null && authContext.getPermissionList() != null) {
+            return authContext.getPermissionList();
+        }
+        return java.util.Collections.emptyList();
     }
 
     /**
@@ -352,7 +382,7 @@ public class PictureController {
         Long pictureId = searchPictureByPictureRequest.getPictureId();
         ThrowUtils.throwIf(pictureId == null || pictureId <= 0, ErrorCode.PARAMS_ERROR);
         User loginUser = userService.getLoginUser(request);
-        Picture oldPicture = pictureService.getById(pictureId);
+        Picture oldPicture = pictureService.getPicture(pictureId, searchPictureByPictureRequest.getSpaceId());
         ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
         pictureService.checkPictureAuth(loginUser, oldPicture);
         Urls urls = oldPicture.getUrls();

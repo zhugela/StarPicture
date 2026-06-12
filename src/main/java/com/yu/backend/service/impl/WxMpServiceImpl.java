@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.yu.backend.config.WxMiniAppProperties;
 import com.yu.backend.config.WxMpProperties;
 import com.yu.backend.exception.BusinessException;
 import com.yu.backend.exception.ErrorCode;
@@ -28,9 +27,6 @@ public class WxMpServiceImpl implements WxMpService {
 
     @Resource
     private WxMpProperties wxMpProperties;
-
-    @Resource
-    private WxMiniAppProperties wxMiniAppProperties;
 
   /** 简单内存缓存 access_token */
     private final AtomicReference<CachedToken> tokenCache = new AtomicReference<>();
@@ -109,17 +105,13 @@ public class WxMpServiceImpl implements WxMpService {
     @Override
     public void createDefaultMenu() {
         String accessToken = getAccessToken();
-        String miniAppId = wxMiniAppProperties.getAppId();
-        ThrowUtils.throwIf(StrUtil.isBlank(miniAppId), ErrorCode.OPERATION_ERROR, "未配置小程序 appId，无法创建含小程序入口的菜单");
 
         JSONObject menu = JSONUtil.createObj();
         menu.set("button", JSONUtil.createArray()
                 .put(JSONUtil.createObj()
-                        .set("type", "miniprogram")
+                        .set("type", "click")
                         .set("name", "打开图库")
-                        .set("url", "http://mp.weixin.qq.com")
-                        .set("appid", miniAppId)
-                        .set("pagepath", "pages/index/index"))
+                        .set("key", "GALLERY"))
                 .put(JSONUtil.createObj()
                         .set("name", "功能")
                         .set("sub_button", JSONUtil.createArray()
@@ -130,13 +122,7 @@ public class WxMpServiceImpl implements WxMpService {
                                 .put(JSONUtil.createObj()
                                         .set("type", "click")
                                         .set("name", "图库说明")
-                                        .set("key", "GALLERY"))
-                                .put(JSONUtil.createObj()
-                                        .set("type", "miniprogram")
-                                        .set("name", "上传图片")
-                                        .set("url", "http://mp.weixin.qq.com")
-                                        .set("appid", miniAppId)
-                                        .set("pagepath", "pages/upload/upload")))));
+                                        .set("key", "GALLERY")))));
 
         String url = MENU_CREATE_URL + accessToken;
         String resp = HttpUtil.post(url, menu.toString());

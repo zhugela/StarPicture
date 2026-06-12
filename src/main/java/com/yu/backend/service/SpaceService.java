@@ -69,4 +69,9 @@ public interface SpaceService extends IService<Space> {
      * 删除空间内一条图片后的用量：totalCount - 1，totalSize -= picSize（需在事务内调用）
      */
     boolean delPictureUpdateSpaceUsage(Long spaceId, Long picSize);
+
+    /**
+     * 校验登录用户是否有权限操作 / 查询空间
+     */
+    void checkSpaceAuth(User loginUser, Space space);
 }

@@ -85,9 +85,18 @@ public interface PictureService extends IService<Picture> {
      * 删除图片（逻辑删除记录，并按引用数决定是否清理 COS）
      *
      * @param pictureId 图片 id
+     * @param spaceId   空间 id（公共图库为 0；分表查询必填）
      * @param loginUser 当前登录用户
      */
-    void deletePicture(long pictureId, User loginUser);
+    void deletePicture(long pictureId, Long spaceId, User loginUser);
+
+    /**
+     * 按 id + spaceId 查询图片（ShardingSphere 分表路由）
+     *
+     * @param id      图片 id
+     * @param spaceId 空间 id，null 时仅按 id 查询（会广播分表，不推荐）
+     */
+    Picture getPicture(Long id, Long spaceId);
 
     /**
      * 校验当前用户是否有权操作该图片（编辑、删除、查看空间内资源等）。

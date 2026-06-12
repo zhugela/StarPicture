@@ -6,8 +6,9 @@ server:
 spring:
   application:
     name: backend2
+  # 服务器 jar 默认 prod；本地开发请加：--spring.profiles.active=local
   profiles:
-    active: local
+    active: prod
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -40,14 +41,13 @@ redis:
   port: 6379
   timeout: 5000
 
-# 微信小程序（app-secret 请在 application-local.yml 或环境变量配置）
+auth:
+  jwt:
+    secret: star-picture-jwt-secret-change-me
+    expire-days: 30
+
+# 微信公众号（AppID/AppSecret 为公众号凭证）
 wx:
-  miniapp:
-    app-id: wxcc006e978973a40b
-    app-secret: ''
-    token-secret: star-picture-jwt-secret-change-me
-    token-expire-days: 30
-  # 微信公众号（与小程序共用后端；AppID/AppSecret 为公众号凭证，非小程序）
   mp:
     enabled: true
     app-id: ''
@@ -55,6 +55,6 @@ wx:
     token: starpicture
     subscribe-reply: |
       欢迎关注内娱图库！
-      回复「图库」或「帮助」获取说明，也可点击菜单进入小程序。
-    default-reply: 感谢留言！回复「图库」或「帮助」，或点击底部菜单打开小程序。
+      回复「图库」或「帮助」获取使用说明。
+    default-reply: 感谢留言！回复「图库」或「帮助」获取更多信息。
     # keyword-reply 使用 WxMpProperties 内默认值，避免 YAML 多行块绑定 Map 失败

@@ -16,7 +16,7 @@ public class LoginUserVo implements Serializable {
     private Date createTime;
 
     /**
-     * 小程序 / 账号登录 JWT（登录接口返回，后续请求带 Authorization: Bearer）
+     * 登录 JWT（登录接口返回，后续请求带 Authorization: Bearer）
      */
     private String token;
 

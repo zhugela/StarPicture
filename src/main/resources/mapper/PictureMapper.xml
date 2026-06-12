@@ -38,4 +38,53 @@
         updateTime,isDelete,reviewStatus,
         reviewMessage,reviewerId,reviewTime
     </sql>
+
+    <select id="getCategoryStatistics" resultType="map">
+        SELECT category AS category,
+               COUNT(*) AS count,
+               IFNULL(SUM(picSize), 0) AS totalSize
+        FROM picture
+        WHERE isDelete = 0
+        <if test="params.queryAll != null and params.queryAll">
+        </if>
+        <if test="params.queryPublic != null and params.queryPublic">
+            AND spaceId = 0
+        </if>
+        <if test="params.spaceId != null and params.spaceId > 0">
+            AND spaceId = #{params.spaceId}
+        </if>
+        GROUP BY category
+    </select>
+
+    <select id="analyzeByTimeDimension" resultType="map">
+        SELECT
+        <choose>
+            <when test="params.timeDimension == 'day'">
+                DATE_FORMAT(createTime, '%Y-%m-%d') AS period,
+            </when>
+            <when test="params.timeDimension == 'week'">
+                YEARWEEK(createTime) AS period,
+            </when>
+            <when test="params.timeDimension == 'month'">
+                DATE_FORMAT(createTime, '%Y-%m') AS period,
+            </when>
+            <otherwise>
+                DATE_FORMAT(createTime, '%Y-%m-%d') AS period,
+            </otherwise>
+        </choose>
+        COUNT(*) AS count
+        FROM picture
+        WHERE isDelete = 0
+        <if test="params.queryPublic != null and params.queryPublic">
+            AND spaceId = 0
+        </if>
+        <if test="params.spaceId != null and params.spaceId > 0">
+            AND spaceId = #{params.spaceId}
+        </if>
+        <if test="params.userId != null and params.userId > 0">
+            AND userId = #{params.userId}
+        </if>
+        GROUP BY period
+        ORDER BY period
+    </select>
 </mapper>

@@ -17,7 +17,7 @@ public interface UserConstant {
     String ADMIN_ROLE = "admin";
 
     /**
-     * 小程序 Bearer Token 请求头
+     * Bearer Token 请求头
      */
     String AUTHORIZATION_HEADER = "Authorization";
 

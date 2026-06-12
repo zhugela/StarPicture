@@ -62,6 +62,7 @@ CREATE TABLE `space`
     `id`         BIGINT AUTO_INCREMENT NOT NULL COMMENT 'id',
     `spaceName`  VARCHAR(128)                   DEFAULT NULL COMMENT '空间名称',
     `spaceLevel` INT                            DEFAULT 0 COMMENT '空间级别：0-普通版 1-专业版 2-旗舰版',
+    `spaceType`  INT                  NOT NULL DEFAULT 0 COMMENT '空间类型：0-私有 1-团队',
     `maxSize`    BIGINT                         DEFAULT 0 COMMENT '空间图片最大总大小（字节）',
     `maxCount`   BIGINT                         DEFAULT 0 COMMENT '空间图片最大数量',
     `totalSize`  BIGINT                         DEFAULT 0 COMMENT '当前空间图片总大小',
@@ -74,10 +75,30 @@ CREATE TABLE `space`
     PRIMARY KEY (`id`),
     KEY `idx_userId` (`userId`),
     KEY `idx_spaceName` (`spaceName`),
-    KEY `idx_spaceLevel` (`spaceLevel`)
+    KEY `idx_spaceLevel` (`spaceLevel`),
+    KEY `idx_spaceType` (`spaceType`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='空间';
+
+-- -----------------------------------------------------------------------------
+-- 4.1 空间成员表 space_user（团队空间成员与角色）
+-- -----------------------------------------------------------------------------
+CREATE TABLE `space_user`
+(
+    `id`         BIGINT AUTO_INCREMENT NOT NULL COMMENT 'id',
+    `spaceId`    BIGINT                NOT NULL COMMENT '空间 id',
+    `userId`     BIGINT                NOT NULL COMMENT '用户 id',
+    `spaceRole`  VARCHAR(128)                   DEFAULT 'viewer' COMMENT '空间角色：viewer/editor/admin',
+    `createTime` DATETIME              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` DATETIME              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_spaceId_userId` (`spaceId`, `userId`),
+    KEY `idx_spaceId` (`spaceId`),
+    KEY `idx_userId` (`userId`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='空间用户关联';
 
 -- -----------------------------------------------------------------------------
 -- 5. 图片表 picture（urls 为 JSON，含原图/主图/缩略图等）
