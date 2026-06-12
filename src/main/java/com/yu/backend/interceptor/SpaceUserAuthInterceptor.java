@@ -87,6 +87,9 @@ public class SpaceUserAuthInterceptor implements HandlerInterceptor {
                 case "picture":
                     authRequest.setPictureId(id);
                     break;
+                case "file":
+                    authRequest.setPictureId(id);
+                    break;
                 case "spaceUser":
                     authRequest.setSpaceUserId(id);
                     break;
@@ -127,6 +130,10 @@ public class SpaceUserAuthInterceptor implements HandlerInterceptor {
             if (path.contains("edit") || path.contains("delete") || path.contains("upload") || path.contains("admin")) {
                 spaceUserAuthRouteChecker.checkPictureRoute(path, authContext);
             }
+        } else if (path.startsWith("/file/")) {
+            if (path.contains("upload")) {
+                spaceUserAuthRouteChecker.checkPictureRoute(path, authContext);
+            }
         } else if (path.startsWith("/spaceUser/")) {
             if (path.contains("manage")) {
                 spaceUserAuthRouteChecker.checkSpaceUserRoute(path, authContext);
@@ -141,6 +148,9 @@ public class SpaceUserAuthInterceptor implements HandlerInterceptor {
     private boolean requiresLogin(String path) {
         if (path.startsWith("/picture/")) {
             return path.contains("edit") || path.contains("delete") || path.contains("upload") || path.contains("admin");
+        }
+        if (path.startsWith("/file/")) {
+            return path.contains("upload");
         }
         if (path.startsWith("/spaceUser/")) {
             return path.contains("manage");

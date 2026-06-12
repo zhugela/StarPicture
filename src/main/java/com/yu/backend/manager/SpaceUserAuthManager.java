@@ -288,6 +288,10 @@ public class SpaceUserAuthManager {
 
         Long spaceId = authContext.getSpaceId();
 
+        if (PictureConstant.isPublicSpace(spaceId)) {
+            return getPublicSpacePermissionList(loginUser, authContext);
+        }
+
         if (spaceId == null) {
 
             Long pictureId = authContext.getPictureId();
@@ -328,7 +332,30 @@ public class SpaceUserAuthManager {
 
     }
 
-
+    /**
+     * 公共图库（spaceId=0）无 space 表记录，按图片归属或管理员判定权限
+     */
+    private List<String> getPublicSpacePermissionList(User loginUser, SpaceUserAuthContext authContext) {
+        List<String> adminPermissions = getPermissionsByRole(SpaceRoleEnum.ADMIN.getValue());
+        if (userService.isAdmin(loginUser)) {
+            return adminPermissions;
+        }
+        Long pictureId = authContext.getPictureId();
+        if (pictureId == null && authContext.getId() != null) {
+            pictureId = authContext.getId();
+        }
+        if (pictureId != null) {
+            Picture picture = pictureMapper.selectOne(new QueryWrapper<Picture>()
+                    .eq("id", pictureId)
+                    .eq("spaceId", PictureConstant.PUBLIC_SPACE_ID));
+            ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR, "未找到图片信息");
+            if (picture.getUserId().equals(loginUser.getId())) {
+                return adminPermissions;
+            }
+            return Collections.singletonList(SpaceUserPermissionConstant.PICTURE_VIEW);
+        }
+        return Collections.singletonList(SpaceUserPermissionConstant.PICTURE_VIEW);
+    }
 
     private boolean isAllFieldsNull(Object object) {
 

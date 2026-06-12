@@ -226,6 +226,10 @@ public class CosManager {
     }
 
     public String getBaseUrl() {
+        if (StrUtil.isNotBlank(cosClientProperties.getHost())) {
+            String host = cosClientProperties.getHost().trim();
+            return host.endsWith("/") ? host.substring(0, host.length() - 1) : host;
+        }
         return String.format("https://%s.cos.%s.myqcloud.com",
                 cosClientProperties.getBucket(), cosClientProperties.getRegion());
     }

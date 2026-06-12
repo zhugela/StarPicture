@@ -227,7 +227,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         User loginUser = pictureUploadRequest.getUser();
         Long spaceId = pictureUploadRequest.getSpaceId();
         Long spaceIdOfPicture = null;
-        if (spaceId != null) {
+        if (spaceId != null && !PictureConstant.isPublicSpace(spaceId)) {
             Space space = spaceMapper.selectById(spaceId);
             ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
             List<String> permissions = spaceUserAuthManager.getPermissionList(space, loginUser);
@@ -236,7 +236,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             spaceIdOfPicture = spaceId;
         }
         if (Objects.isNull(spaceIdOfPicture) && pictureUploadRequest.getId() != null) {
-            Picture picture = getPicture(pictureUploadRequest.getId(), spaceId);
+            Picture picture = getPicture(pictureUploadRequest.getId(), pictureUploadRequest.getSpaceId());
             ThrowUtils.throwIf(Objects.isNull(picture), ErrorCode.NOT_FOUND_ERROR, "图片不存在");
             if (PictureConstant.isPublicSpace(picture.getSpaceId())) {
                 return null;
