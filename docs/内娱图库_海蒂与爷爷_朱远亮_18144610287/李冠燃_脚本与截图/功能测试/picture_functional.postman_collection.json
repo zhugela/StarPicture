@@ -1,0 +1,284 @@
+{
+  "info": {
+    "name": "StarPicture_图片模块_功能测试",
+    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-PU-001_本地上传_jpg",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload"
+          ]
+        },
+        "description": "form-data 模式：file=1.jpg （记得设置 key=file）"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PU-002_本地上传_png",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload"
+          ]
+        },
+        "description": "form-data 模式：file=1.png"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PU-003_本地上传_超过2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload"
+          ]
+        },
+        "description": "form-data 模式：file=5MB.jpg"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PU-004_本地上传_非图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload"
+          ]
+        },
+        "description": "form-data 模式：file=test.pdf"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PU-005_本地上传_空文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload"
+          ]
+        },
+        "description": "form-data 模式：file=0byte.jpg"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PX-001_搜图_有结果",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/picture",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"猫\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PX-002_搜图_无结果",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/picture",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"xyz999\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PX-003_搜图_空文本",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/picture",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PX-004_搜图_超长",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/picture",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-PX-005_搜图_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/picture",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "info": {
+    "name": "StarPicture_用户模块_功能测试",
+    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-UR-001_注册_账号密码正确",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "register"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"Zhyl_New01\",\n  \"userPassword\": \"12345678\",\n  \"checkPassword\": \"12345678\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UR-002_注册_账号已存在",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "register"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"Zhyl_New01\",\n  \"userPassword\": \"12345678\",\n  \"checkPassword\": \"12345678\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UR-003_注册_密码不一致",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "register"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"Zhyl_New02\",\n  \"userPassword\": \"12345678\",\n  \"checkPassword\": \"87654321\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UR-004_注册_账号为空",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "register"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"\",\n  \"userPassword\": \"12345678\",\n  \"checkPassword\": \"12345678\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UR-005_注册_账号长度不足",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "register"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"abc\",\n  \"userPassword\": \"12345678\",\n  \"checkPassword\": \"12345678\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UL-001_登录_账号密码正确",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "login"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"testuser01\",\n  \"userPassword\": \"12345678\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UL-002_登录_密码错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "login"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"testuser01\",\n  \"userPassword\": \"wrongpass\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UL-003_登录_账号不存在",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "login"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"testuser99\",\n  \"userPassword\": \"12345678\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UL-004_登录_空body",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "login"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-UL-005_登录_密码小于8字符",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "login"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userAccount\": \"testuser01\",\n  \"userPassword\": \"1234567\"\n}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

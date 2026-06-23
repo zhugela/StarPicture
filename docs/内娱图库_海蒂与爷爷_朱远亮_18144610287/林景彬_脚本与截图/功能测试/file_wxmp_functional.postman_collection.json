@@ -1,0 +1,269 @@
+{
+  "info": {
+    "name": "StarPicture_头像_获取用户模块_功能测试",
+    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-AT-001_头像上传_jpg_512KB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "form-data 模式：file=512KB_jpg（要先登录拿 Cookie）"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-AT-002_头像上传_png",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "form-data 模式：file=512KB_png"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-AT-003_头像上传_超过2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "form-data 模式：file=5MB_jpg"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-AT-004_头像上传_非图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "form-data 模式：file=test.pdf"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-AT-005_头像上传_空文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "form-data 模式：file=0byte.jpg"
+      },
+      "response": []
+    },
+    {
+      "name": "TC-GC-001_获取当前用户_已登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "TC-GC-002_获取当前用户_未登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "TC-GC-003_获取当前用户_Cookie过期",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "TC-GC-004_获取当前用户_Cookie伪造",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "TC-GC-005_获取当前用户_头像URL正确",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

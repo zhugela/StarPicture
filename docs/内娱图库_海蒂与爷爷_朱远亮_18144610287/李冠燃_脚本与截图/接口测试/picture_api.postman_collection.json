@@ -1,0 +1,182 @@
+{
+  "info": {
+    "name": "StarPicture_图片模块_接口测试",
+    "description": "李冠燃负责。覆盖 multipart、参数类型、空值、边界等接口契约。",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "API-001_上传_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload"
+          ]
+        },
+        "description": "form-data 不带 boundary，应返回 400 或 415"
+      },
+      "response": []
+    },
+    {
+      "name": "API-002_编辑_id类型错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/edit",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "edit"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"abc\",\n  \"name\": \"x\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API-003_查询_负数id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/get?id=-1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "get?id=-1"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "API-004_分页_pageSize超限",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/list/page",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "list",
+            "page"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"current\": 1,\n  \"pageSize\": 10000\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API-005_搜索_空文本",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/picture",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API-006_搜索_颜色_非法值",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/picture/search/color",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "picture",
+            "search",
+            "color"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"picColor\": \"notacolor\"\n}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

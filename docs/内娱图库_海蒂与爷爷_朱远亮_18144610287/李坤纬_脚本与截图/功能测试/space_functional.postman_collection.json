@@ -1,0 +1,296 @@
+{
+  "info": {
+    "name": "StarPicture_空间模块_功能测试",
+    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-SP-001_获取空间等级",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/list/level",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "list",
+            "level"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SP-002_创建空间_普通版",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceName\": \"我的空间\",\n  \"spaceLevel\": 0\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SP-003_创建空间_名称为空",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceName\": \"\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SP-004_创建空间_名称超长",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceName\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SP-005_创建空间_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceName\": \"x\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SU-001_添加空间成员",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/spaceUser/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceId\": 9,\n  \"userId\": 1,\n  \"spaceRole\": \"viewer\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SU-002_查询空间成员",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/spaceUser/list",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "spaceUser",
+            "list"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceId\": 9\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SU-003_添加成员_重复",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/spaceUser/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceId\": 9,\n  \"userId\": 1,\n  \"spaceRole\": \"viewer\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SU-004_添加成员_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/spaceUser/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceId\": 9,\n  \"userId\": 1\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TC-SU-005_删除空间成员",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/spaceUser/delete",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "spaceUser",
+            "delete"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1\n}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

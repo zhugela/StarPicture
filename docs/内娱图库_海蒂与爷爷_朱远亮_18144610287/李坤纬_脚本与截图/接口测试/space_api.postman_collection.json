@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "StarPicture_空间模块_接口测试",
+    "description": "李坤纬负责。覆盖 Content-Type 异常、参数缺失、负数 id 等接口契约。",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "API-001_空间_缺Content-Type",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"spaceName\": \"x\",\n  \"spaceLevel\": 0\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API-002_成员_缺字段",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/spaceUser/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API-003_分析_缺spaceId",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/analyze/usage",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "analyze",
+            "usage"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API-004_编辑_负数id",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/space/edit",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "space",
+            "edit"
+          ]
+        },
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": -1,\n  \"spaceName\": \"x\"\n}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

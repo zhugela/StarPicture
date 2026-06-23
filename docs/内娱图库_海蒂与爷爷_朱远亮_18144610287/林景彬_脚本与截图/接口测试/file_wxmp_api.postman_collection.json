@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "StarPicture_头像_获取用户模块_接口测试",
+    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "API-001_头像上传_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "Headers 改成 application/xml + Body raw 写乱码"
+      },
+      "response": []
+    },
+    {
+      "name": "API-002_头像上传_Content-Type错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "Content-Type=application/json + Body 二进制"
+      },
+      "response": []
+    },
+    {
+      "name": "API-003_头像_无文件_应失败",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/file/upload/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "不传 file 字段"
+      },
+      "response": []
+    },
+    {
+      "name": "API-004_获取用户_无Cookie",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "API-005_获取用户_方法错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/get/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8123/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
