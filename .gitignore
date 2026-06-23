@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# 部署产物
+BOOT-INF/
+node_modules/
+
+# Python 临时文件
+__pycache__/
+*.pyc
+_backend.log
