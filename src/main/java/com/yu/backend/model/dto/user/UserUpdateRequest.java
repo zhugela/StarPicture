@@ -1,4 +1,4 @@
-package com.yu.backend.model.entity;
+package com.yu.backend.model.dto.user;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;

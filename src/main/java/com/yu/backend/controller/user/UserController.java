@@ -15,7 +15,7 @@ import com.yu.backend.model.dto.user.UserUpdateMyRequest;
 import com.yu.backend.model.dto.user.UserRegisterRequest;
 import cn.hutool.core.util.StrUtil;
 import com.yu.backend.model.entity.User;
-import com.yu.backend.model.entity.UserUpdateRequest;
+import com.yu.backend.model.dto.user.UserUpdateRequest;
 import com.yu.backend.model.vo.LoginUserVo;
 import com.yu.backend.model.vo.UserVO;
 import com.yu.backend.service.UserService;
