@@ -1,0 +1,848 @@
+{
+  "info": {
+    "name": "StarPicture 测试用例集",
+    "description": "可直接导入 Postman 运行的测试集合",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-FT-001 test_upload_正常jpg",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/test/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "test",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/test/upload\nBody: multipart file=1MB_jpg\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-001 本地上传_正常jpg",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=2MB_jpg\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=2MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-002 本地上传_png",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=1MB_png\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1MB_png",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-003 本地上传_超2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=5MB_jpg\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=5MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-004 本地上传_非图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=test.pdf\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=test.pdf",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-005 本地上传_空文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=0byte.jpg\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=0byte.jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-006 上传_伪JSP木马",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=1.jpg (内容是 <?php system($_GET['c']);?>)\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1.jpg (内容是 <?php system($_GET['c']);?>)",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-007 上传_双扩展名绕过",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=1.jpg.php\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1.jpg.php",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FL-008 本地上传_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=1MB_jpg\n\n预期结果:\ncode=40100",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FA-001 头像上传_jpg",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload/avatar\nBody: multipart file=512KB_jpg\n\n预期结果:\ncode=0, userAvatar 已更新",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=512KB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FA-002 头像上传_png",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload/avatar\nBody: multipart file=512KB_png\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=512KB_png",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FA-003 头像上传_超2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload/avatar\nBody: multipart file=5MB_jpg\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=5MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FA-004 头像上传_非图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload/avatar\nBody: multipart file=test.pdf\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=test.pdf",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-FA-005 头像上传_空文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload/avatar\nBody: multipart file=0byte.jpg\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=0byte.jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-GC-001 获取当前用户_已登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /user/get/login\nCookie: xxx\n\n预期结果:\ncode=0, 含 userAvatar"
+      }
+    },
+    {
+      "name": "TC-GC-002 获取当前用户_未登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nGET /user/get/login\n\n预期结果:\ncode=40100"
+      }
+    },
+    {
+      "name": "TC-GC-003 获取当前用户_Cookie过期",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: 过期 Cookie\n\n步骤:\nGET /user/get/login\nCookie: 过期的JWT\n\n预期结果:\ncode=40100"
+      }
+    },
+    {
+      "name": "TC-GC-004 获取当前用户_Cookie伪造",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: 伪造 Cookie\n\n步骤:\nGET /user/get/login\nCookie: userId=999999 的伪造Cookie\n\n预期结果:\ncode=40100"
+      }
+    },
+    {
+      "name": "TC-WP-001 公众号门户_签名验证",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/portal",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "portal"
+          ]
+        },
+        "description": "前置条件: 微信服务器GET\n\n步骤:\nGET /wx/mp/portal?signature=xxx&timestamp=xxx&nonce=xxx&echostr=xxx\n\n预期结果:\n返回 echostr 明文"
+      }
+    },
+    {
+      "name": "TC-WP-002 公众号门户_消息处理",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/portal",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "portal"
+          ]
+        },
+        "description": "前置条件: 微信服务器POST\n\n步骤:\nPOST /wx/mp/portal\nBody: <xml>...</xml>\n\n预期结果:\ncode=0, 响应XML",
+        "body": {
+          "mode": "raw",
+          "raw": "<xml>...</xml>",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-WM-001 创建公众号菜单",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/menu/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "menu",
+            "create"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /wx/mp/menu/create\nBody: {\"button\":[{\"name\":\"测试\",\"type\":\"click\",\"key\":\"test\"}]}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"button\": [{\"name\": \"\\u6d4b\\u8bd5\", \"type\": \"click\", \"key\": \"test\"}]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-WM-002 创建菜单_无菜单数据",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/menu/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "menu",
+            "create"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /wx/mp/menu/create\nBody: {}\n\n预期结果:\ncode=40001"
+      }
+    },
+    {
+      "name": "TC-WM-003 创建菜单_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/menu/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "menu",
+            "create"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nPOST /wx/mp/menu/create\nBody: {...}\n\n预期结果:\ncode=40100",
+        "body": {
+          "mode": "raw",
+          "raw": "{...}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PERF-001 文件上传_50并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: JMeter\n\n步骤:\nPOST /file/upload 50线程 5s内启动\nBody: multipart file=1MB_jpg\n\n预期结果:\nP95 < 2s, 错误率 < 5%",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-001 upload_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nHeader: Content-Type: multipart/form-data (缺 boundary)\nBody: raw 乱码\n\n预期结果:\n400 或 415",
+        "body": {
+          "mode": "raw",
+          "raw": "raw 乱码",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

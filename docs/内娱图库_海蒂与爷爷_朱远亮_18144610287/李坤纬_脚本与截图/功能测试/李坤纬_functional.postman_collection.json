@@ -1,0 +1,1151 @@
+{
+  "info": {
+    "name": "StarPicture 测试用例集",
+    "description": "可直接导入 Postman 运行的测试集合",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-SPL-001 获取空间等级列表",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/list/level",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "list",
+            "level"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nGET /space/list/level\n\n预期结果:\ncode=0, 含普通版/专业版/旗舰版"
+      }
+    },
+    {
+      "name": "TC-SPA-001 创建空间_普通版",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "add"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/add\nBody: {\"spaceName\":\"我的空间\",\"spaceLevel\":0}\n\n预期结果:\ncode=0, spaceId 存在",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceName\": \"\\u6211\\u7684\\u7a7a\\u95f4\", \"spaceLevel\": 0}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPA-002 创建空间_名称为空",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "add"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/add\nBody: {\"spaceName\":\"\",\"spaceLevel\":0}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceName\": \"\", \"spaceLevel\": 0}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPA-003 创建空间_名称超长50",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "add"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/add\nBody: {\"spaceName\":\"x\"*50,\"spaceLevel\":0}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceName\":\"x\"*50,\"spaceLevel\":0}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPA-004 创建空间_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "add"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nPOST /space/add\nBody: {\"spaceName\":\"x\",\"spaceLevel\":0}\n\n预期结果:\ncode=40100",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceName\": \"x\", \"spaceLevel\": 0}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPS-001 保存空间",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/save",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "save"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/save\nBody: {\"spaceName\":\"x\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceName\": \"x\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPG-001 按id查询空间",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "get"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /space/get?id=1\n\n预期结果:\ncode=0"
+      }
+    },
+    {
+      "name": "TC-SPG-002 查询空间_不存在id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "get"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /space/get?id=999999\n\n预期结果:\ncode=40001"
+      }
+    },
+    {
+      "name": "TC-SPGV-001 按id查询空间VO",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/get/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "get",
+            "vo"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /space/get/vo?id=1\n\n预期结果:\ncode=0, SpaceVO"
+      }
+    },
+    {
+      "name": "TC-SPLP-001 分页查询空间",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/list/page",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "list",
+            "page"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/list/page\nBody: {\"current\":1,\"pageSize\":10}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPLP-002 分页_超大页",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/list/page",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "list",
+            "page"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/list/page\nBody: {\"current\":1,\"pageSize\":10000}\n\n预期结果:\n被限制或code=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPLPV-001 分页查询空间VO",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/list/page/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "list",
+            "page",
+            "vo"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/list/page/vo\nBody: {\"current\":1,\"pageSize\":10}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPE-001 编辑空间",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "edit"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/edit\nBody: {\"id\":1,\"spaceName\":\"新名\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"spaceName\": \"\\u65b0\\u540d\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPE-002 编辑空间_越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "edit"
+          ]
+        },
+        "description": "前置条件: testuser02 Cookie\n\n步骤:\nPOST /space/edit\nBody: {\"id\":1,\"spaceName\":\"x\"}\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"spaceName\": \"x\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPD-001 删除空间",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "delete"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/delete\nBody: {\"id\":1}\n\n预期结果:\ncode=0, isDelete=1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPD-002 删除空间_越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "delete"
+          ]
+        },
+        "description": "前置条件: testuser02 Cookie\n\n步骤:\nPOST /space/delete\nBody: {\"id\":1}\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SPU-001 更新空间",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/update",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "update"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/update\nBody: {\"id\":1,\"spaceName\":\"新名\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"spaceName\": \"\\u65b0\\u540d\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUA-001 添加空间成员",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /spaceUser/add\nBody: {\"spaceId\":1,\"userId\":2,\"spaceRole\":\"viewer\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1, \"userId\": 2, \"spaceRole\": \"viewer\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUA-002 添加成员_重复",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /spaceUser/add\nBody: {\"spaceId\":1,\"userId\":2,\"spaceRole\":\"viewer\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1, \"userId\": 2, \"spaceRole\": \"viewer\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUA-003 添加成员_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "add"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nPOST /spaceUser/add\nBody: {\"spaceId\":1,\"userId\":2}\n\n预期结果:\ncode=40100",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1, \"userId\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUG-001 查询空间成员",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "get"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /spaceUser/get\nBody: {\"spaceId\":1,\"userId\":2}\n\n预期结果:\n返回 SpaceUser",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1, \"userId\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUL-001 查询空间成员列表",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/list",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "list"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /spaceUser/list\nBody: {\"spaceId\":1}\n\n预期结果:\n返回成员列表",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SULM-001 我加入的空间列表",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/list/my",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "list",
+            "my"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /spaceUser/list/my\n\n预期结果:\n返回 testuser01 加入的空间列表"
+      }
+    },
+    {
+      "name": "TC-SUE-001 编辑空间成员角色",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "edit"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /spaceUser/edit\nBody: {\"id\":1,\"spaceRole\":\"editor\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"spaceRole\": \"editor\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUD-001 删除空间成员",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "delete"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /spaceUser/delete\nBody: {\"id\":1}\n\n预期结果:\ncode=0, isDelete=1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SUD-002 删除成员_越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/spaceUser/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "spaceUser",
+            "delete"
+          ]
+        },
+        "description": "前置条件: testuser02 Cookie\n\n步骤:\nPOST /spaceUser/delete\nBody: {\"id\":1}\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SA-001 空间使用情况分析",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/usage",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "usage"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/usage\nBody: {\"spaceId\":1}\n\n预期结果:\n返回 usedSize, maxSize, usagePercent",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SAC-001 空间分类分析",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/category",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "category"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/category\nBody: {\"spaceId\":1}\n\n预期结果:\n返回分类统计",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SAT-001 空间标签分析",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/tag",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "tag"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/tag\nBody: {\"spaceId\":1}\n\n预期结果:\n返回标签统计",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SASZ-001 空间大小分析",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/size",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "size"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/size\nBody: {\"spaceId\":1}\n\n预期结果:\n返回 size 区间分布",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SAU-001 空间用户分析",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/user",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "user"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/user\nBody: {\"spaceId\":1}\n\n预期结果:\n返回用户上传统计",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-SAR-001 空间排行",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/rank",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "rank"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/rank\n\n预期结果:\n返回空间使用排行"
+      }
+    },
+    {
+      "name": "TC-PERF-001 空间分析_20并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/usage",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "usage"
+          ]
+        },
+        "description": "前置条件: JMeter\n\n步骤:\nPOST /space/analyze/usage 20线程 5s内启动\nBody: {\"spaceId\":1}\n\n预期结果:\nP95 < 1s, 错误率 0%",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-001 分析_缺spaceId",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/usage",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "usage"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /space/analyze/usage\nBody: {}\n\n预期结果:\ncode=40001"
+      }
+    }
+  ]
+}

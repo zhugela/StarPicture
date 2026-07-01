@@ -1,0 +1,1033 @@
+{
+  "info": {
+    "name": "StarPicture 测试用例集",
+    "description": "可直接导入 Postman 运行的测试集合",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-UR-001 注册_正常",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/register\nBody: userAccount=newtest, userPassword=Test12345, checkPassword=Test12345\n\n预期结果:\ncode=0, data 含 userId",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=newtest, userPassword=Test12345, checkPassword=Test12345",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UR-002 注册_账号已存在",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "description": "前置条件: newtest 已注册\n\n步骤:\nPOST /user/register\nBody: userAccount=newtest, userPassword=Test12345, checkPassword=Test12345\n\n预期结果:\ncode=40001, 提示账号已存在",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=newtest, userPassword=Test12345, checkPassword=Test12345",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UR-003 注册_账号为空",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/register\nBody: userAccount=, userPassword=Test12345, checkPassword=Test12345\n\n预期结果:\ncode=40001, 提示账号不能为空",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=, userPassword=Test12345, checkPassword=Test12345",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UR-004 注册_密码不一致",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/register\nBody: userAccount=test01, userPassword=Test12345, checkPassword=Test11111\n\n预期结果:\ncode=40001, 提示密码不一致",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=test01, userPassword=Test12345, checkPassword=Test11111",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UR-005 注册_账号长度不足4",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/register\nBody: userAccount=abc, userPassword=Test12345, checkPassword=Test12345\n\n预期结果:\ncode=40001, 提示账号长度不足",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=abc, userPassword=Test12345, checkPassword=Test12345",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UL-001 登录_正常",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: testuser01 已存在\n\n步骤:\nPOST /user/login\nBody: userAccount=testuser01, userPassword=12345678\n\n预期结果:\ncode=0, Set-Cookie, data 含 userInfo",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=testuser01, userPassword=12345678",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UL-002 登录_密码错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: testuser01 已存在\n\n步骤:\nPOST /user/login\nBody: userAccount=testuser01, userPassword=wrongpass\n\n预期结果:\ncode=40001, 提示密码错误",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=testuser01, userPassword=wrongpass",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UL-003 登录_账号不存在",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/login\nBody: userAccount=nonexist, userPassword=12345678\n\n预期结果:\ncode=40001, 提示账号不存在",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=nonexist, userPassword=12345678",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UL-004 登录_SQL注入",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: testuser01 已存在\n\n步骤:\nPOST /user/login\nBody: userAccount=testuser01' OR '1'='1, userPassword=12345678\n\n预期结果:\ncode=40001, 拒绝登录",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=testuser01' OR '1'='1, userPassword=12345678",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UL-005 登录_账号为空",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/login\nBody: userAccount=, userPassword=12345678\n\n预期结果:\ncode=40001, 提示账号不能为空",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=, userPassword=12345678",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UL-006 登录_密码为空",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/login\nBody: userAccount=testuser01, userPassword=\n\n预期结果:\ncode=40001, 提示密码不能为空",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=testuser01, userPassword=",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-GC-001 获取当前登录用户_已登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /user/get/login\nCookie: xxx\n\n预期结果:\ncode=0, data 含 id, userAccount, userName"
+      }
+    },
+    {
+      "name": "TC-GC-002 获取当前登录用户_未登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nGET /user/get/login\n\n预期结果:\ncode=40100, 未登录"
+      }
+    },
+    {
+      "name": "TC-GC-003 获取当前用户_伪造Cookie",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "前置条件: 伪造的 Cookie\n\n步骤:\nGET /user/get/login\nCookie: jwt=xxx伪造的xxx\n\n预期结果:\ncode=40100, 未登录"
+      }
+    },
+    {
+      "name": "TC-UM-001 修改个人信息_正常",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/update/my",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "update",
+            "my"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /user/update/my\nBody: userName=新昵称, userProfile=新简介\n\n预期结果:\ncode=0, data 含更新后的信息",
+        "body": {
+          "mode": "raw",
+          "raw": "userName=新昵称, userProfile=新简介",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UM-002 修改个人信息_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/update/my",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "update",
+            "my"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nPOST /user/update/my\nBody: userName=新昵称\n\n预期结果:\ncode=40100",
+        "body": {
+          "mode": "raw",
+          "raw": "userName=新昵称",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UM-003 修改个人信息_XSS",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/update/my",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "update",
+            "my"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /user/update/my\nBody: userName=<script>alert(1)</script>\n\n预期结果:\ncode=40001 或 userName 被过滤",
+        "body": {
+          "mode": "raw",
+          "raw": "userName=<script>alert(1)</script>",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UA-001 管理员新增用户",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "add"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /user/add\nBody: userAccount=newbyadmin, userPassword=Test12345\n\n预期结果:\ncode=0, data 含 userId",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=newbyadmin, userPassword=Test12345",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UA-002 新增用户_普通用户越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "add"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /user/add\nBody: userAccount=xxx, userPassword=Test12345\n\n预期结果:\ncode=40300, 无权限",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=xxx, userPassword=Test12345",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UG-001 按ID查询用户",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nGET /user/get?id=1\n\n预期结果:\ncode=0, data 含 id=1 的用户信息"
+      }
+    },
+    {
+      "name": "TC-UG-002 按ID查询_用户不存在",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nGET /user/get?id=99999\n\n预期结果:\ncode=40001, 用户不存在"
+      }
+    },
+    {
+      "name": "TC-UGV-001 按ID查询用户VO",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "vo"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nGET /user/get/vo?id=1\n\n预期结果:\ncode=0, data 含 UserVO"
+      }
+    },
+    {
+      "name": "TC-UD-001 删除用户_正常",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "delete"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /user/delete\nBody: id=99\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "id=99",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UD-002 删除用户_普通用户越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "delete"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /user/delete\nBody: id=2\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "id=2",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-UU-001 管理员更新用户",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/update",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "update"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /user/update\nBody: id=2, userName=updated\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "id=2, userName=updated",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-ULP-001 分页查询用户",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/list/page/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "list",
+            "page",
+            "vo"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /user/list/page/vo\nBody: current=1, pageSize=10\n\n预期结果:\ncode=0, records 有数据",
+        "body": {
+          "mode": "raw",
+          "raw": "current=1, pageSize=10",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-ULP-002 分页查询_第0页",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/list/page/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "list",
+            "page",
+            "vo"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /user/list/page/vo\nBody: current=0, pageSize=10\n\n预期结果:\ncode=40001 或返回第1页",
+        "body": {
+          "mode": "raw",
+          "raw": "current=0, pageSize=10",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-ULO-001 用户注销",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "logout"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /user/logout\n\n预期结果:\ncode=0, Cookie 被清除"
+      }
+    },
+    {
+      "name": "TC-ULO-002 注销_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "logout"
+          ]
+        },
+        "description": "前置条件: 无 Cookie\n\n步骤:\nPOST /user/logout\n\n预期结果:\ncode=40100"
+      }
+    },
+    {
+      "name": "TC-PERF-001 登录_50并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "前置条件: testuser01 已存在\n\n步骤:\nPOST /user/login 50并发\nBody: userAccount=testuser01, userPassword=12345678\n\n预期结果:\nP95 < 500ms, 错误率 < 5%",
+        "body": {
+          "mode": "raw",
+          "raw": "userAccount=testuser01, userPassword=12345678",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-001 注册_Content-Type错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "description": "前置条件: 无\n\n步骤:\nPOST /user/register\nHeader: Content-Type: application/xml\nBody: <xml>test</xml>\n\n预期结果:\ncode=40001 或 415",
+        "body": {
+          "mode": "raw",
+          "raw": "<xml>test</xml>",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
