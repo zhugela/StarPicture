@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UR-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -38,7 +38,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UR-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -70,7 +70,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UR-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -102,7 +102,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UR-004 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -134,7 +134,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UR-005 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -166,7 +166,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UL-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -198,7 +198,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UL-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -230,7 +230,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UL-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -262,7 +262,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UL-004 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -294,7 +294,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UL-005 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -326,7 +326,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UL-006 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -358,7 +358,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-GC-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -390,7 +390,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-GC-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -422,7 +422,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-GC-003 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -454,7 +454,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UM-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -486,7 +486,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UM-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -518,7 +518,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UM-003 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -550,7 +550,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UA-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -582,7 +582,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UA-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -614,7 +614,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UG-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -646,7 +646,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-UG-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -678,7 +678,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UGV-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -710,7 +710,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UD-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -742,7 +742,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UD-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -774,7 +774,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-UU-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -806,7 +806,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-ULP-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -838,7 +838,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-ULP-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -870,7 +870,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-ULO-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -902,7 +902,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-ULO-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -934,9 +934,9 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PERF-001 - 2",
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
@@ -966,9 +966,9 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-API-001 - 2",
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
@@ -988,7 +988,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{}",
+          "raw": "{\"userAccount\": \"test\", \"userPassword\": \"Test12345\"}",
           "options": {
             "raw": {
               "language": "json"

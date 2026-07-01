@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PU-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -38,7 +38,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PU-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -70,7 +70,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PU-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -102,7 +102,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PU-004 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -134,7 +134,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PU-005 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -166,7 +166,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PUU-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -198,7 +198,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PUU-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -230,7 +230,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PUU-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -262,7 +262,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PUU-004 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -294,7 +294,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PUB-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -326,7 +326,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PUB-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -358,7 +358,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PG-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -390,7 +390,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PG-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -422,7 +422,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PGV-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -454,7 +454,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PLP-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -486,7 +486,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PLP-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -518,7 +518,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PLP-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -550,7 +550,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PLPV-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -582,7 +582,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PLC-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -614,7 +614,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PD-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -646,7 +646,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PD-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -678,7 +678,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PD-003 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -710,7 +710,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PE-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -742,7 +742,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PE-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -774,7 +774,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PE-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -806,7 +806,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PEB-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -838,7 +838,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PEB-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -870,7 +870,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PUd-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -902,7 +902,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PUd-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -934,7 +934,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PTC-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -966,7 +966,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PR-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -998,7 +998,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PR-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1030,7 +1030,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PR-003 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1062,7 +1062,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PSP-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1094,7 +1094,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PSP-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -1126,7 +1126,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PSP-003 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -1158,7 +1158,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PSC-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1190,7 +1190,7 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PSC-002 - 2",
       "request": {
         "method": "GET",
         "header": [
@@ -1222,7 +1222,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-POP-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1254,7 +1254,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-POG-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1286,7 +1286,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PPE-001 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1318,7 +1318,7 @@
       }
     },
     {
-      "name": "功能测试 - 1",
+      "name": "TC-PPE-002 - 1",
       "request": {
         "method": "GET",
         "header": [
@@ -1350,9 +1350,9 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-PERF-001 - 2",
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
@@ -1382,9 +1382,9 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-API-001 - 2",
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
@@ -1404,7 +1404,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{}",
+          "raw": "{\"userAccount\": \"test\", \"userPassword\": \"Test12345\"}",
           "options": {
             "raw": {
               "language": "json"
@@ -1414,9 +1414,9 @@
       }
     },
     {
-      "name": "功能测试 - 2",
+      "name": "TC-API-002 - 2",
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
@@ -1436,7 +1436,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{}",
+          "raw": "{\"userAccount\": \"test\", \"userPassword\": \"Test12345\"}",
           "options": {
             "raw": {
               "language": "json"
