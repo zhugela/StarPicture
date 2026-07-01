@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "StarPicture_图片模块_功能测试",
-    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "name": "StarPicture 测试用例集",
+    "description": "可直接导入 Postman 运行的测试集合",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -269,16 +269,1544 @@
         }
       },
       "response": []
-    }
-  ],
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8123/api"
     },
     {
-      "key": "token",
-      "value": ""
+      "name": "TC-PU-001 本地上传_jpg_2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=2MB_jpg\n\n预期结果:\ncode=0, url 字段为可访问链接",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=2MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PU-002 本地上传_png",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=1MB_png\n\n预期结果:\ncode=0, picFormat=png",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=1MB_png",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PU-003 本地上传_超过2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=5MB_jpg\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=5MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PU-004 本地上传_非图片文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=test.pdf\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=test.pdf",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PU-005 本地上传_空文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nBody: multipart file=0byte.jpg\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=0byte.jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUU-001 URL上传_合法URL",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload/url",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload",
+            "url"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/upload/url\nBody: {\"fileUrl\":\"https://example.com/1.jpg\",\"picName\":\"test\"}\n\n预期结果:\ncode=0, picture.url 已写入",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fileUrl\": \"https://example.com/1.jpg\", \"picName\": \"test\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUU-002 URL上传_内网URL_SSRF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload/url",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload",
+            "url"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/upload/url\nBody: {\"fileUrl\":\"http://127.0.0.1/x.jpg\"}\n\n预期结果:\ncode=40001, 防止 SSRF",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fileUrl\": \"http://127.0.0.1/x.jpg\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUU-003 URL上传_404",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload/url",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload",
+            "url"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/upload/url\nBody: {\"fileUrl\":\"https://example.com/notfound.jpg\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fileUrl\": \"https://example.com/notfound.jpg\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUU-004 URL上传_非图片URL",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload/url",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload",
+            "url"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/upload/url\nBody: {\"fileUrl\":\"https://example.com/index.html\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fileUrl\": \"https://example.com/index.html\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUB-001 批量上传_5张",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload/batch",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload",
+            "batch"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/upload/batch\nBody: multipart files=[5张jpg]\n\n预期结果:\ncode=0, 5 条记录",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart files=[5张jpg]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUB-002 批量上传_超过20张",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload/batch",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload",
+            "batch"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/upload/batch\nBody: multipart files=[30张]\n\n预期结果:\ncode=40001 或只保存前N张",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart files=[30张]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PG-001 按id查询原数据",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "get"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /picture/get?id=1\n\n预期结果:\ncode=0, 含完整 url"
+      }
+    },
+    {
+      "name": "TC-PG-002 查询_不存在id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/get",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "get"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /picture/get?id=999999\n\n预期结果:\ncode=40001"
+      }
+    },
+    {
+      "name": "TC-PGV-001 按id查询VO",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/get/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "get",
+            "vo"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /picture/get/vo?id=1\n\n预期结果:\ncode=0, PictureVO"
+      }
+    },
+    {
+      "name": "TC-PLP-001 分页查询_默认",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/list/page",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "list",
+            "page"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/list/page\nBody: {\"current\":1,\"pageSize\":10}\n\n预期结果:\ncode=0, 10 条记录",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PLP-002 分页_超大pageSize",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/list/page",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "list",
+            "page"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/list/page\nBody: {\"current\":1,\"pageSize\":10000}\n\n预期结果:\n被限制或code=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PLP-003 分页_按标签过滤",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/list/page",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "list",
+            "page"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/list/page\nBody: {\"tags\":[\"tag1\"]}\n\n预期结果:\n返回含 tag1 的图片",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"tags\": [\"tag1\"]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PLPV-001 分页查询VO_管理员查所有",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/list/page/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "list",
+            "page",
+            "vo"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /picture/list/page/vo\nBody: {\"current\":1,\"pageSize\":10}\n\n预期结果:\n返回所有用户图片",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PLC-001 缓存分页查询",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/list/page/vo/cache",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "list",
+            "page",
+            "vo",
+            "cache"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/list/page/vo/cache\nBody: {\"current\":1,\"pageSize\":10}\n\n预期结果:\ncode=0, 第二次更快",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 1, \"pageSize\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PD-001 删除自己的图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "delete"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/delete\nBody: {\"id\":1}\n\n预期结果:\ncode=0, isDelete=1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PD-002 删除别人的图片_越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "delete"
+          ]
+        },
+        "description": "前置条件: testuser02 Cookie\n\n步骤:\nPOST /picture/delete\nBody: {\"id\":1}\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PD-003 管理员删任意图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "delete"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /picture/delete\nBody: {\"id\":2}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PE-001 编辑名称简介标签",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/edit\nBody: {\"id\":1,\"name\":\"新名\",\"introduction\":\"新简介\",\"tags\":\"[\\\"tag1\\\"]\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\":1,\"name\":\"新名\",\"introduction\":\"新简介\",\"tags\":\"[\\\"tag1\\\"]\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PE-002 编辑_XSS标签",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/edit\nBody: {\"id\":1,\"tags\":\"[\\\"<script>alert(1)</script>\\\"]\"}\n\n预期结果:\ncode=0, 渲染时被转义",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\":1,\"tags\":\"[\\\"<script>alert(1)</script>\\\"]\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PE-003 编辑_不存在的id",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/edit\nBody: {\"id\":999999,\"name\":\"x\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 999999, \"name\": \"x\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PEB-001 批量编辑_3张分类",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit/batch",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit",
+            "batch"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/edit/batch\nBody: {\"ids\":[1,2,3],\"category\":\"风景\"}\n\n预期结果:\ncode=0, 3张图category被更新",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"ids\": [1, 2, 3], \"category\": \"\\u98ce\\u666f\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PEB-002 批量编辑_空数组",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit/batch",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit",
+            "batch"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/edit/batch\nBody: {\"ids\":[]}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"ids\": []}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUd-001 管理员更新图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/update",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "update"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /picture/update\nBody: {\"id\":1,\"name\":\"管理员修改\"}\n\n预期结果:\ncode=0",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"name\": \"\\u7ba1\\u7406\\u5458\\u4fee\\u6539\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PUd-002 更新_非管理员越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/update",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "update"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/update\nBody: {\"id\":1}\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PTC-001 获取标签分类聚合",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/tag_category",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "tag_category"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /picture/tag_category\n\n预期结果:\n返回 tagList + categoryList"
+      }
+    },
+    {
+      "name": "TC-PR-001 管理员审核通过",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/review",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "review"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /picture/review\nBody: {\"id\":1,\"reviewStatus\":1,\"reviewMessage\":\"ok\"}\n\n预期结果:\ncode=0, reviewStatus=1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"reviewStatus\": 1, \"reviewMessage\": \"ok\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PR-002 管理员审核拒绝",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/review",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "review"
+          ]
+        },
+        "description": "前置条件: admin Cookie\n\n步骤:\nPOST /picture/review\nBody: {\"id\":1,\"reviewStatus\":2,\"reviewMessage\":\"违规\"}\n\n预期结果:\ncode=0, reviewStatus=2",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"reviewStatus\": 2, \"reviewMessage\": \"\\u8fdd\\u89c4\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PR-003 审核_普通用户越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/review",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "review"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/review\nBody: {\"id\":1}\n\n预期结果:\ncode=40300",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PSP-001 关键字搜图",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/search/picture",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/search/picture\nBody: {\"text\":\"猫\"}\n\n预期结果:\n返回含'猫'的图片列表",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"text\": \"\\u732b\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PSP-002 搜图_无结果",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/search/picture",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/search/picture\nBody: {\"text\":\"xyz999\"}\n\n预期结果:\n返回空列表",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"text\": \"xyz999\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PSP-003 搜图_空文本",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/search/picture",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/search/picture\nBody: {\"text\":\"\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"text\": \"\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PSC-001 颜色搜图_蓝色",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/search/color",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "search",
+            "color"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/search/color\nBody: {\"picColor\":\"#0000FF\"}\n\n预期结果:\n返回主色为蓝的图片",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"picColor\": \"#0000FF\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-PSC-002 颜色搜图_无效颜色值",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/search/color",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "search",
+            "color"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/search/color\nBody: {\"picColor\":\"notacolor\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"picColor\": \"notacolor\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-POP-001 AI扩图_创建任务",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/out_painting/create_task",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "out_painting",
+            "create_task"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/out_painting/create_task\nBody: {\"pictureId\":1}\n\n预期结果:\ncode=0, outputTaskId 非空",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"pictureId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-POG-001 AI扩图_查询任务",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/out_painting/get_task",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "out_painting",
+            "get_task"
+          ]
+        },
+        "description": "前置条件: 有任务\n\n步骤:\nGET /picture/out_painting/get_task?taskId=xxx\n\n预期结果:\n返回任务状态"
+      }
+    },
+    {
+      "name": "TC-PPE-001 编辑代理_跨域URL",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/proxy/editor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "proxy",
+            "editor"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /picture/proxy/editor?url=https://example.com/1.jpg\n\n预期结果:\n返回图片二进制流"
+      }
+    },
+    {
+      "name": "TC-PPE-002 编辑代理_内网URL_SSRF",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/proxy/editor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "proxy",
+            "editor"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nGET /picture/proxy/editor?url=http://192.168.1.1/admin\n\n预期结果:\ncode=40001 拒绝内网"
+      }
+    },
+    {
+      "name": "TC-PERF-001 上传_20并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: JMeter\n\n步骤:\nPOST /file/upload 20线程 5s内启动\nBody: multipart file=2MB_jpg\n\n预期结果:\nP95 < 3s, 错误率 < 5%",
+        "body": {
+          "mode": "raw",
+          "raw": "multipart file=2MB_jpg",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-001 上传_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "upload"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /file/upload\nHeader: Content-Type: multipart/form-data (缺 boundary)\nBody: raw 乱码\n\n预期结果:\n400 或 415",
+        "body": {
+          "mode": "raw",
+          "raw": "raw 乱码",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-002 编辑_id类型错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit"
+          ]
+        },
+        "description": "前置条件: testuser01 Cookie\n\n步骤:\nPOST /picture/edit\nBody: {\"id\":\"abc\",\"name\":\"x\"}\n\n预期结果:\ncode=40001",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": \"abc\", \"name\": \"x\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
     }
   ]
 }

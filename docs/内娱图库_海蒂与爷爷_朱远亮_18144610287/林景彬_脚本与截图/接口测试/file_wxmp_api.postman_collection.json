@@ -129,6 +129,74 @@
         "description": ""
       },
       "response": []
+    },
+    {
+      "name": "TC-API-001_头像上传_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "raw乱码",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-002_头像上传_Content-Type错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "<xml>test</xml>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        }
+      }
     }
   ],
   "variable": [

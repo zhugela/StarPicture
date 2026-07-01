@@ -142,6 +142,97 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "TC-API-001_注册_Content-Type错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "<xml>test</xml>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-002_登录_无Cookie",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        }
+      }
+    },
+    {
+      "name": "TC-API-003_分页_第0页",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/list/page/vo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "list",
+            "page",
+            "vo"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"current\": 0, \"pageSize\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
     }
   ],
   "variable": [

@@ -117,6 +117,70 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "TC-API-001_空间_缺Content-Type",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8123/api/space/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "add"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"spaceName\": \"x\", \"spaceLevel\": 0}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-002_分析_缺spaceId",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/space/analyze/usage",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "space",
+            "analyze",
+            "usage"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
     }
   ],
   "variable": [

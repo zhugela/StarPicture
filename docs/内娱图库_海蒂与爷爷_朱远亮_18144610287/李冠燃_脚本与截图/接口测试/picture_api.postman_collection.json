@@ -167,6 +167,109 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "TC-API-001_上传_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "raw乱码内容",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-002_编辑_id类型错误",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "edit"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": \"abc\", \"name\": \"x\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC-API-003_搜图_缺text字段",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/picture/search/picture",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "picture",
+            "search",
+            "picture"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
     }
   ],
   "variable": [
