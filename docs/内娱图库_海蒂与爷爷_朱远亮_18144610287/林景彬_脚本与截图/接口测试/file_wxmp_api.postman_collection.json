@@ -1,143 +1,391 @@
 {
   "info": {
-    "name": "StarPicture_头像_获取用户模块_接口测试",
-    "description": "导入：Postman → File → Import → Upload Files → 选此 json\n跑法：左侧点集合 → 选每个用例 → 右侧 Send → 截图为证",
+    "name": "StarPicture_文件公众号模块_完整测试集",
+    "description": "林景彬负责的 File+wxMp 模块全部测试用例（26条）\n\n用例分布:\n- 功能测试: 11条\n- 性能测试: 6条\n- 接口测试: 3条\n- 安全测试: 6条",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "API-001_头像上传_缺multipart边界",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/file/upload/avatar",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "file",
-            "upload",
-            "avatar"
-          ]
-        },
-        "description": "Headers 改成 application/xml + Body raw 写乱码"
-      },
-      "response": []
-    },
-    {
-      "name": "API-002_头像上传_Content-Type错误",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/file/upload/avatar",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "file",
-            "upload",
-            "avatar"
-          ]
-        },
-        "description": "Content-Type=application/json + Body 二进制"
-      },
-      "response": []
-    },
-    {
-      "name": "API-003_头像_无文件_应失败",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/file/upload/avatar",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "file",
-            "upload",
-            "avatar"
-          ]
-        },
-        "description": "不传 file 字段"
-      },
-      "response": []
-    },
-    {
-      "name": "API-004_获取用户_无Cookie",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/user/get/login",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "user",
-            "get",
-            "login"
-          ]
-        },
-        "description": ""
-      },
-      "response": []
-    },
-    {
-      "name": "API-005_获取用户_方法错误",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/user/get/login",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "user",
-            "get",
-            "login"
-          ]
-        },
-        "description": ""
-      },
-      "response": []
-    },
-    {
-      "name": "TC-API-001_头像上传_缺multipart边界",
+      "name": "TC-AT-001_头像上传_jpg",
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
             "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "512KB_jpg"
+            }
+          ]
+        },
+        "description": "功能测试: jpg 格式\n前置条件: testuser01 Cookie\n预期: code=0, userAvatar更新"
+      }
+    },
+    {
+      "name": "TC-AT-002_头像上传_png",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "512KB_png"
+            }
+          ]
+        },
+        "description": "功能测试: png 格式\n前置条件: testuser01 Cookie\n预期: code=0, userAvatar更新"
+      }
+    },
+    {
+      "name": "TC-AT-003_头像上传_超过2MB",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "5MB_jpg"
+            }
+          ]
+        },
+        "description": "功能测试: 超大文件\n前置条件: testuser01 Cookie\n预期: code=40001"
+      }
+    },
+    {
+      "name": "TC-AT-004_头像上传_非图片",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "test.pdf"
+            }
+          ]
+        },
+        "description": "功能测试: 非法格式\n前置条件: testuser01 Cookie\n预期: code=40001"
+      }
+    },
+    {
+      "name": "TC-AT-005_头像上传_空文件",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "0byte.jpg"
+            }
+          ]
+        },
+        "description": "功能测试: 空文件\n前置条件: testuser01 Cookie\n预期: code=40001"
+      }
+    },
+    {
+      "name": "TC-GC-001_获取当前用户_已登录",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "jwt=有效token"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "功能测试: 获取当前用户\n预期: code=0, 含id/userAccount/userName"
+      }
+    },
+    {
+      "name": "TC-GC-002_获取当前用户_未登录",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "功能测试: 获取当前用户\n预期: code=40100"
+      }
+    },
+    {
+      "name": "TC-GC-003_获取当前用户_Cookie过期",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "jwt=过期token"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "功能测试: 获取当前用户\n预期: code=40100"
+      }
+    },
+    {
+      "name": "TC-GC-004_获取当前用户_Cookie伪造",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "jwt=fake_xxx"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "功能测试: 获取当前用户\n预期: code=40100"
+      }
+    },
+    {
+      "name": "TC-GC-005_获取当前用户_头像URL正确",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "jwt=有效token"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "功能测试: 获取当前用户\n预期: code=0, userAvatar 含 http"
+      }
+    },
+    {
+      "name": "TC-WX-001_公众号门户_签名验证",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/portal?signature=xxx&timestamp=1234567890&nonce=abc&echostr=test123",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "portal"
+          ]
+        },
+        "description": "功能测试: 公众号签名验证\n前置条件: 无\n预期: 返回 echostr"
+      }
+    },
+    {
+      "name": "TC-PERF-001_头像上传_50并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "\"multipart file\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "性能测试: /file/upload/avatar\n前置条件: JMeter\n预期: P95 < 阈值"
+      }
+    },
+    {
+      "name": "TC-PERF-002_本地上传_20并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           }
         ],
         "url": {
@@ -155,13 +403,194 @@
         },
         "body": {
           "mode": "raw",
+          "raw": "\"multipart file\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "性能测试: /file/upload\n前置条件: JMeter\n预期: P95 < 阈值"
+      }
+    },
+    {
+      "name": "TC-PERF-003_获取用户_50并发",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "性能测试: /user/get/login\n前置条件: JMeter\n预期: P95 < 阈值"
+      }
+    },
+    {
+      "name": "TC-PERF-004_公众号菜单_20并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/menu/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "menu",
+            "create"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"button\": []}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "性能测试: /wx/mp/menu/create\n前置条件: JMeter\n预期: P95 < 阈值"
+      }
+    },
+    {
+      "name": "TC-PERF-005_文件上传_50并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "\"multipart file\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "性能测试: /file/upload\n前置条件: JMeter\n预期: P95 < 阈值"
+      }
+    },
+    {
+      "name": "TC-PERF-006_公众号门户_20并发",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/portal",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "portal"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "\"<xml>test</xml>\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "性能测试: /wx/mp/portal\n前置条件: JMeter\n预期: P95 < 阈值"
+      }
+    },
+    {
+      "name": "TC-API-001_头像上传_缺multipart边界",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "raw",
           "raw": "raw乱码",
           "options": {
             "raw": {
               "language": "text"
             }
           }
-        }
+        },
+        "description": "接口测试: 缺boundary\n预期: 400或415"
       }
     },
     {
@@ -175,7 +604,7 @@
           }
         ],
         "url": {
-          "raw": "http://localhost:8123/api/file/upload",
+          "raw": "http://localhost:8123/api/file/upload/avatar",
           "protocol": "http",
           "host": [
             "localhost"
@@ -184,7 +613,8 @@
           "path": [
             "api",
             "file",
-            "upload"
+            "upload",
+            "avatar"
           ]
         },
         "body": {
@@ -195,18 +625,239 @@
               "language": "xml"
             }
           }
-        }
+        },
+        "description": "接口测试: Content-Type错误\n预期: code=40001 或 415"
+      }
+    },
+    {
+      "name": "TC-API-003_获取用户_方法错误",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "接口测试: GET接口用POST调\n预期: 405 或 code=40001"
+      }
+    },
+    {
+      "name": "TC-SEC-001_头像上传_伪PHP木马",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "test.php.jpg"
+            }
+          ]
+        },
+        "description": "安全测试: 伪PHP木马\n预期: code=40001"
+      }
+    },
+    {
+      "name": "TC-SEC-002_头像上传_双扩展名绕过",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "1.jpg.php"
+            }
+          ]
+        },
+        "description": "安全测试: 双扩展名绕过\n预期: code=40001"
+      }
+    },
+    {
+      "name": "TC-SEC-003_头像上传_越权",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          },
+          {
+            "key": "Cookie",
+            "value": "jwt=普通用户token"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/file/upload/avatar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "file",
+            "upload",
+            "avatar"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "test.jpg"
+            }
+          ]
+        },
+        "description": "安全测试: 越权修改他人头像\n预期: 只修改本人头像"
+      }
+    },
+    {
+      "name": "TC-SEC-004_获取用户_未登录",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "安全测试: 未登录\n预期: code=40100"
+      }
+    },
+    {
+      "name": "TC-SEC-005_获取用户_伪造Cookie",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "jwt=fake_xxx"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/user/get/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "user",
+            "get",
+            "login"
+          ]
+        },
+        "description": "安全测试: 伪造Cookie\n预期: code=40100"
+      }
+    },
+    {
+      "name": "TC-SEC-006_公众号菜单_未登录",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8123/api/wx/mp/menu/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8123",
+          "path": [
+            "api",
+            "wx",
+            "mp",
+            "menu",
+            "create"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"button\": [{\"name\": \"\\u6d4b\\u8bd5\", \"type\": \"click\", \"key\": \"test\"}]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "安全测试: 未登录创建菜单\n预期: code=40100"
       }
     }
   ],
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:8123/api"
-    },
-    {
-      "key": "token",
-      "value": ""
+      "value": "http://localhost:8123/api",
+      "type": "string"
     }
   ]
 }
